@@ -9,6 +9,8 @@ A notification service is provided for applications to release and acquire resou
 
 ## Results
 
+![Spring Boot](spring-boot.png)
+
 ## API
 
 The JDK provides an API in for notification described in [jdk/api]
