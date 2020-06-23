@@ -1,10 +1,12 @@
 # C/RaC
-Checkpoint/Restore-at-Checkpoint is OpenJDK feature that provides rapid start of warmed-up java application.
-The application started as usual, warmed-up and then image of JVM and the application are stored ("checkpointed") to a storage.
-After that the image used to start java app instances which starts ("restored") at the point of checkpoint.
 
-Not everything can be and is stored in the image: opened files, sockets remain to be external resources.
-C/RaC requires all external resources to be released before checkpoint, so they need to be re-aqcuired after restore.
+Checkpoint/Restore-at-Checkpoint is an OpenJDK feature that provides a fast start of warmed-up java application.
+At first, the image of JVM and an application in the warmed-up state need to be prepared.
+For the preparational step, an application is started as usual and warmed up, then the image of the JVM and the application is stored ("checkpointed") to storage
+After that, the image used to start java app instances that are started ("restored") at the point of the checkpoint.
+
+Not everything can be and is stored in the image: open files, sockets remain to be external resources.
+C/RaC requires all external resources to be released before the checkpoint, so they need to be re-acquired after restore.
 A notification service is provided for applications to release and acquire resources.
 
 ## Results
@@ -24,7 +26,7 @@ The JDK provides an API in for notification described in [jdk/api]
 [jdk](https://github.com/org-crac/jdk) provides a proof-of-concept C/RaC API implementation for Linux as well as prebuilt binaries.
 
 [org.crac](https://github.com/org-crac/org.crac) compatibility wrapper provides a C/RaC-aware application run on any Java8+ implementation 
-It wraps native C/RaC implementaion in JDK and provide dummy implementaiton if native one is unavailble. 
+It wraps native C/RaC implementation in JDK and provides dummy implementation if native one is unavailable. 
 
 ## Examples
 
@@ -42,6 +44,7 @@ C/RaC support in frameworks allows users to slightly if at all modify their serv
 
 ## Implementation
 
-Current OpenJDK implementaion is based on using CRIU project to create the image.
-[CRIU](https://github.com/org-crac/criu) hosts few changes made mainline CRIU to improve C/RaC usability.
+Current OpenJDK implementation is based on using the CRIU project to create the image.
+
+[CRIU](https://github.com/org-crac/criu) hosts a few changes made to improve C/RaC usability.
 
