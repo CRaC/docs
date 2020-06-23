@@ -9,6 +9,10 @@ A notification service is provided for applications to release and acquire resou
 
 ## Results
 
+(Preliminary results from https://github.com/org-crac/example-spring-boot/runs/788817292)
+
+![Startup Time](startup.png)
+
 ![Spring Boot](spring-boot.png)
 
 ## API
