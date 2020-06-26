@@ -19,13 +19,13 @@ A notification service is provided for applications to release and acquire resou
 
 ## API
 
-The JDK provides an API in for notification described in [jdk/api]
+The JDK notification service provided via this [API](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html).
 
 ### org.crac
 
 [jdk](https://github.com/org-crac/jdk) provides a proof-of-concept C/RaC API implementation for Linux as well as prebuilt binaries.
 
-[org.crac](https://github.com/org-crac/org.crac) compatibility wrapper provides a C/RaC-aware application run on any Java8+ implementation 
+[org.crac](https://github.com/org-crac/org.crac) compatibility wrapper allows a C/RaC-aware application to run on any Java8+ implementation.
 It wraps native C/RaC implementation in JDK and provides dummy implementation if native one is unavailable. 
 
 ## Examples
