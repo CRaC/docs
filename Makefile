@@ -1,9 +1,8 @@
-all : spring-boot.png startup.png
+all : startup.png spring-boot.png quarkus.png micronaut.png
 
-%.png : openjdk.%.data crac.%.data perf.plot
+%.png : %.data perf.plot
 	gnuplot -e 'title = "$*"' \
-		-e 'openjdk = "openjdk.$*.data"' \
-		-e 'crac = "crac.$*.data"' \
+		-e 'datafile = "$*.data"' \
 		-e 'output = "$@"' \
 		perf.plot
 

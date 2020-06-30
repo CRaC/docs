@@ -1,4 +1,4 @@
-set terminal pngcairo enhanced font "Arial,12" fontscale 1.0 size 800, 400
+set terminal pngcairo enhanced font "Arial,12" fontscale 1.0 size 800, 500
 set output "startup.png"
 
 set samples 600, 600
@@ -8,7 +8,7 @@ set xlabel "ms"
 
 set offset 0,0,10,10
 barwidth = 2.0
-barspace = -5.0
+barspace = -10.0
 
 unset border
 set tics scale 0
