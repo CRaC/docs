@@ -42,7 +42,7 @@ Source code for changes and examples can be found in the [Examples](#examples).
 
 The archive should be extracted with
 ```
-$ sudo jdk.tar.gz
+$ sudo tar zxf jdk.tar.gz
 ````
 
 ## Examples
@@ -57,8 +57,7 @@ Application may need to be changed to run with C/RaC.
 This section reviews all steps needed to use C/RaC with a Jetty application.
 
 Full source code for this section can be found in [example-jetty](https://github.com/org-crac/example-jetty) repo.
-Commit history is useful for details excluded from here for clearity.
-
+Commit history corresponds to the steps of the tutorial with greater details.
 
 Let's take a simple Jetty application as a starting point:
 ```java
@@ -152,13 +151,16 @@ For this:
     }
     ```
 2. Register the object in a `Context` that will invoke the `Resource`'s methods as notification.
-JDK provides a global default `Context`.
+There is a global `Context` that can be used as default choice.
      ```java
         public ServerManager(int port, Handler handler) throws Exception {
             ...
             Core.getGlobalContext().register(this);
         }
     ```
+
+**N.B.**: Using of `jdk.crac` API makes compilation and execution of the example possible only on Java implementations with C/RaC.
+Please refer to [org.crac](#orgcrac) section for how to handle the problem.
 
 This example is a special by presence of a single non-daemon thread owned by Jetty that keeps JVM from exit.
 When `server.stop()` is called the thread exits and so does the JVM instead of the checkpoint.
@@ -231,10 +233,19 @@ $ $JAVA_HOME/bin/java -Zrestore:cr
 
 ### org.crac
 
-[org.crac](https://github.com/org-crac/org.crac) allows a C/RaC-aware application to be built and run on any Java8+ implementation.
-It is a library that totally mirrors C/RaC API in own package.
-It passes all requests to the  C/RaC implementation in JDK if one available.
-When the JDK doesn't have C/RaC implemenation, `org.crac` redirectes everything to a dummy implementation that allows the application C/RaC support to run but don't benefit from C/RaC.
+`jdk.crac` API is available only in JDKs and JREs with C/RaC implementation.
+So an arbitrary Java distribution will not be able to build and run a code that uses this API.
+
+[org.crac](https://github.com/org-crac/org.crac) is designed to provide smooth C/RaC adoption.
+It allows a C/RaC-aware application to be built and run on any Java8+ implementation.
+
+For compile-time, `org.crac` API totally mirrors `jdk.crac` API.
+
+For runtime, org.crac uses reflection to detect C/RaC implementation availability.
+If the one is presented, all requests to `org.crac` are passed to the `jdk.crac`.
+It the one is not available, all requests are forwarded to a dummy implementation that allows an application to run but not to use C/RaC:
+* resources can be registered for notification,
+* checkpoint request fails with an exception.
 
 ## Implemenation details
 
