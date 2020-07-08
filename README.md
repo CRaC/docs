@@ -34,6 +34,8 @@ Source code for changes and examples can be found in the [Examples](#examples).
 
 ![Micronaut](micronaut.png)
 
+![xml-transform](xml-transform.png)
+
 ## Builds
 
 [JDK](https://github.com/org-crac/jdk) provides a proof-of-concept C/RaC API implementation for Linux as well as prebuilt [binaries](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).

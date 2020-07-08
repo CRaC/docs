@@ -1,8 +1,11 @@
-# https://github.com/org-crac/example-spring-boot/runs/788817292
-spring-boot	3208	67
+# https://github.com/org-crac/example-spring-boot/runs/850623846
+spring-boot	3853	47
 
-# https://github.com/org-crac/example-quarkus/runs/816817029
-quarkus 	844 	86
+# https://github.com/org-crac/example-quarkus/runs/850514502
+quarkus 	1096 	49
 
 # https://github.com/org-crac/example-micronaut/runs/820520724
-micronaut	1069	87
+micronaut	934	91
+
+# https://github.com/org-crac/example-xml-transform/runs/849958262
+xml-transform	3954	49

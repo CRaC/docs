@@ -1,4 +1,4 @@
-all : startup.png spring-boot.png quarkus.png micronaut.png
+all : startup.png spring-boot.png quarkus.png micronaut.png xml-transform.png
 
 %.png : %.data perf.plot
 	gnuplot -e 'title = "$*"' \
