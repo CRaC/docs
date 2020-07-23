@@ -1,6 +1,6 @@
-# C/RaC
+# CRaC
 
-Checkpoint/Restore-at-Checkpoint is an OpenJDK feature that provides a fast start and immediate performance for Java applications.
+Coordinated Restore at Checkpoint is an OpenJDK feature that provides a fast start and immediate performance for Java applications.
 
 A Java application and JVM are started from an image in a warmed-up form.
 The image is created from a running Java instance at arbitrary point of time ("checkpoint").
