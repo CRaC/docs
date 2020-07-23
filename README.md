@@ -6,9 +6,9 @@ A Java application and JVM are started from an image in a warmed-up form.
 The image is created from a running Java instance at arbitrary point of time ("checkpoint").
 The start from the image ("restore") continues from the point when checkpoint was made.
 
-C/RaC implementation creates checkpoint only if the whole Java instance state can be stored in the image.
+CRaC implementation creates checkpoint only if the whole Java instance state can be stored in the image.
 Resources like open files or sockets are cannot, so it is required to release them when checkpoint is made.
-C/RaC emits notifications for an application to prepare for the checkpoint and return to operating state after restore.
+CRaC emits notifications for an application to prepare for the checkpoint and return to operating state after restore.
 
 * [Results](#results)
 * [Builds](#builds)
@@ -23,7 +23,7 @@ C/RaC emits notifications for an application to prepare for the checkpoint and r
 
 ## Results
 
-C/RaC support was implemented in a few frameworks and it provides next results.
+CRaC support was implemented in a few frameworks and it provides next results.
 Source code for changes and examples can be found in the [Examples](#examples).
 
 ![Startup Time](startup.png)
@@ -38,7 +38,7 @@ Source code for changes and examples can be found in the [Examples](#examples).
 
 ## Builds
 
-[JDK](https://github.com/org-crac/jdk) provides a proof-of-concept C/RaC API implementation for Linux as well as prebuilt [binaries](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).
+[JDK](https://github.com/org-crac/jdk) provides a proof-of-concept CRaC API implementation for Linux as well as prebuilt [binaries](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).
 
 The archive should be extracted with
 ```
@@ -47,14 +47,14 @@ $ sudo tar zxf jdk.tar.gz
 
 ## Examples
 
-Examples are started with Jetty tutorial, followed by a few third-party frameworks and libraries, which demonstrates how C/RaC support can be implemented.
+Examples are started with Jetty tutorial, followed by a few third-party frameworks and libraries, which demonstrates how CRaC support can be implemented.
 
-C/RaC support in a framework allows small if any modification to applications using it.
+CRaC support in a framework allows small if any modification to applications using it.
 
 ### Jetty tutorial
 
-Application may need to be changed to run with C/RaC.
-This section reviews all steps needed to use C/RaC with a Jetty application.
+Application may need to be changed to run with CRaC.
+This section reviews all steps needed to use CRaC with a Jetty application.
 
 Full source code for this section can be found in [example-jetty](https://github.com/org-crac/example-jetty) repo.
 Commit history corresponds to the steps of the tutorial with greater details.
@@ -88,7 +88,7 @@ public class App extends AbstractHandler
 The main thread creates an instance of `ServerManager` that starts managing a jetty instance.
 The thread then exits, leaving the jetty instance a single non-daemon thread.
 
-Java with C/RaC needs to be configured in runtime.
+Java with CRaC needs to be configured in runtime.
 Java argument `-Zcheckpoint:PATH` defines a path to store the image.
 By current implementation it is a directory that will be created if doesn't exist and filled with image files.
 ```sh
@@ -159,7 +159,7 @@ There is a global `Context` that can be used as default choice.
         }
     ```
 
-**N.B.**: Using of `jdk.crac` API makes compilation and execution of the example possible only on Java implementations with C/RaC.
+**N.B.**: Using of `jdk.crac` API makes compilation and execution of the example possible only on Java implementations with CRaC.
 Please refer to [org.crac](#orgcrac) section for how to handle the problem.
 
 This example is a special by presence of a single non-daemon thread owned by Jetty that keeps JVM from exit.
@@ -199,15 +199,15 @@ $ $JAVA_HOME/bin/java -Zrestore:cr
 
 ### Tomcat / Sprint Boot
 
-* [Tomcat](https://github.com/org-crac/tomcat) is a C/RaC-enabled Tomcat
+* [Tomcat](https://github.com/org-crac/tomcat) is a CRaC-enabled Tomcat
   * [packages](https://github.com/org-crac/tomcat/packages) is a maven repo with prebuilt packages
-  * [patch](https://github.com/org-crac/tomcat/compare/8.5.x..crac) shows changes made for C/RaC support to:
+  * [patch](https://github.com/org-crac/tomcat/compare/8.5.x..crac) shows changes made for CRaC support to:
     * tomcat-embed libraries (used by spring-boot-example)
     * standalone Tomcat
     * build-system and CI
 * [example-spring-boot](https://github.com/org-crac/example-spring-boot) is a sample Spring Boot applicaton with Tomcat
-  * [patch](https://github.com/org-crac/example-spring-boot/compare/base..master) demonstrates changes made to use Tomcat with C/RaC
-  * [CI](https://github.com/org-crac/example-spring-boot/runs/820527073) is a run of the application on C/RaC
+  * [patch](https://github.com/org-crac/example-spring-boot/compare/base..master) demonstrates changes made to use Tomcat with CRaC
+  * [CI](https://github.com/org-crac/example-spring-boot/runs/820527073) is a run of the application on CRaC
 
 ### Quarkus
 
@@ -233,17 +233,17 @@ $ $JAVA_HOME/bin/java -Zrestore:cr
 
 ### org.crac
 
-`jdk.crac` API is available only in JDKs and JREs with C/RaC implementation.
+`jdk.crac` API is available only in JDKs and JREs with CRaC implementation.
 So an arbitrary Java distribution will not be able to build and run a code that uses this API.
 
-[org.crac](https://github.com/org-crac/org.crac) is designed to provide smooth C/RaC adoption.
-It allows a C/RaC-aware application to be built and run on any Java8+ implementation.
+[org.crac](https://github.com/org-crac/org.crac) is designed to provide smooth CRaC adoption.
+It allows a CRaC-aware application to be built and run on any Java8+ implementation.
 
 For compile-time, `org.crac` API totally mirrors `jdk.crac` API.
 
-For runtime, org.crac uses reflection to detect C/RaC implementation availability.
+For runtime, org.crac uses reflection to detect CRaC implementation availability.
 If the one is presented, all requests to `org.crac` are passed to the `jdk.crac`.
-It the one is not available, all requests are forwarded to a dummy implementation that allows an application to run but not to use C/RaC:
+It the one is not available, all requests are forwarded to a dummy implementation that allows an application to run but not to use CRaC:
 * resources can be registered for notification,
 * checkpoint request fails with an exception.
 
@@ -251,5 +251,5 @@ It the one is not available, all requests are forwarded to a dummy implementatio
 
 Current OpenJDK implementation is based on using the CRIU project to create the image.
 
-[CRIU](https://github.com/org-crac/criu) hosts a few changes made to improve C/RaC usability.
+[CRIU](https://github.com/org-crac/criu) hosts a few changes made to improve CRaC usability.
 

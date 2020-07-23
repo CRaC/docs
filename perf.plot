@@ -26,4 +26,4 @@ set style data linespoints
 set pointsize 0.75
 plot \
 datafile using 1:2 title 'OpenJDK' pointtype 7 lw 3 linecolor rgb "red", \
-datafile using 1:3 title 'OpenJDK on C/RaC' pointtype 7 lw 3 linecolor rgb "blue"
+datafile using 1:3 title 'OpenJDK on CRaC' pointtype 7 lw 3 linecolor rgb "blue"

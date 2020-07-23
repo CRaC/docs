@@ -20,6 +20,6 @@ set ytics offset 0,first -barwidth/2
 plot \
 'startup.data' using ($2*0.5):($0*barspace+1*barwidth):($2*0.5):(barwidth/2):yticlabel(1) title "OpenJDK" with boxxyerrorbars linecolor rgb "red" , \
 'startup.data' using ($2+20):($0*barspace+1*barwidth):2 with labels left notitle, \
-'startup.data' using ($3*0.5):($0*barspace+0*barwidth):($3*0.5):(barwidth/2) title "OpenJDK on C/RaC" with boxxyerrorbars linecolor rgb "blue", \
+'startup.data' using ($3*0.5):($0*barspace+0*barwidth):($3*0.5):(barwidth/2) title "OpenJDK on CRaC" with boxxyerrorbars linecolor rgb "blue", \
 'startup.data' using ($3+20):($0*barspace+0*barwidth):3 with labels left notitle
 
