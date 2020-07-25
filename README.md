@@ -29,8 +29,8 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
 
 ## Results
 
-CRaC support was implemented in a few frameworks and it provides next results.
-Source code for changes and examples can be found in the [Examples](#examples).
+CRaC support was implemented in a few frameworks with next results.
+The source code can be found in the [examples](#examples) section.
 
 ![Startup Time](startup.png)
 
@@ -42,14 +42,16 @@ Source code for changes and examples can be found in the [Examples](#examples).
 
 ![xml-transform](xml-transform.png)
 
-## Builds
+## JDK
 
-[JDK](https://github.com/org-crac/jdk) provides a proof-of-concept CRaC API implementation for Linux as well as prebuilt [binaries](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).
+We use [JDK builds](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac) to get results for examples.
 
 The archive should be extracted with
 ```
 $ sudo tar zxf jdk.tar.gz
 ````
+
+Source code can be found in the containing [repository](https://github.com/org-crac/jdk).
 
 ## Examples
 
