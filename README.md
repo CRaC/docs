@@ -6,9 +6,15 @@ A Java application and JVM are started from an image in a warmed-up form.
 The image is created from a running Java instance at arbitrary point of time ("checkpoint").
 The start from the image ("restore") continues from the point when checkpoint was made.
 
-CRaC implementation creates checkpoint only if the whole Java instance state can be stored in the image.
+Coordinated Restore at Checkpoint undisruptively introduces new checkpoint and restore phases in Java application lifecycle.
+In contrast with uncoordinated checkpoint/restore, coordination allows restored Java applications to behave differently.
+For example, it is possible to react on changes in execution environment that happened since checkpoint was done.
+
+CRaC implementation creates the checkpoint only if the whole Java instance state can be stored in the image.
 Resources like open files or sockets are cannot, so it is required to release them when checkpoint is made.
 CRaC emits notifications for an application to prepare for the checkpoint and return to operating state after restore.
+
+Coordinated Restore is not tied to a particular checkpoint/restore implementation and will able to use existing ones (CRIU, docker checkpoint/restore) and ones yet to be developed.
 
 * [Results](#results)
 * [Builds](#builds)
