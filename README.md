@@ -271,6 +271,44 @@ $ $JAVA_HOME/bin/java -Zrestore:cr
 2020-06-29 18:06:45.943:INFO:oejs.Server:Thread-9: Started @293756ms
 ```
 
+## Examples
+
+CRaC support in a framework allows small if any modification to applications using it.
+Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
+
+To build the code below, you may need GitHub authorization.
+1. Create once a [Personal Access Token (PAK)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) with [packages scope](https://docs.github.com/en/packages/publishing-and-managing-packages/about-github-packages#about-tokens).
+2. Provide the created PAK into `~/.m2/settings.xml` as described in [the manual](https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages). Minimal file looks like
+```
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>github</id>
+      <username>YOUR_USERNAME</username>
+      <password>YOUR_PAK</password>
+    </server>
+  </servers>
+</settings>
+```
+3. Export variables for examples that use custom `settings.xml`:
+```
+export GITHUB_ACTOR=YOUR_USERNAME
+export GITHUB_TOKEN=YOUR_PAK
+```
+
+For the actual build instructions please refer to CI links below.
+Examples usually can be built with
+```
+mvn -s settings.xml package
+```
+or
+```
+gradle assemble
+```
+
 ### Tomcat / Sprint Boot
 
 * [Tomcat](https://github.com/org-crac/tomcat) is a CRaC-enabled Tomcat
