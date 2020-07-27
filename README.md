@@ -30,7 +30,9 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
   * [Quarkus](#quarkus)
   * [Micronaut](#micronaut)
 * [API](#api)
-  * [org.crac](#orgcrac)
+  * [`jdk.crac`](#`jdkcrac`)
+  * [`javax.crac`](#`javaxcrac`)
+  * [`org.crac`](#`orgcrac`)
 * [Implemenation details](#implemenation-details)
 
 ## Results
@@ -65,8 +67,8 @@ You need to build examples according [Examples](#examples) section.
 Then run
 ```
 host$ docker build -t full-bench -f Dockerfile.full-bench utils
-host$ run -it --privileged -v $HOME:$HOME -v $PWD:$PWD -w $PWD full-bench
-cont# bash ./utils/full-bench.sh collect
+host$ docker run -it --privileged -v $HOME:$HOME -v $PWD:$PWD -w $PWD full-bench
+cont# JDK=<path/to/jdk> bash ./utils/full-bench.sh collect
 ...
 cont# exit
 host$ bash ./utils/full-bench.sh parse
@@ -94,7 +96,7 @@ We use [JDK builds](https://github.com/org-crac/jdk/releases/tag/release-jdk-cra
 
 The archive should be extracted with
 ```
-$ sudo tar zxf jdk.tar.gz
+$ sudo tar zxf jdk14-crac.tar.gz
 ````
 
 Source code can be found in the containing [repository](https://github.com/org-crac/jdk).
