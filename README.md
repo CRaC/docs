@@ -17,9 +17,11 @@ CRaC emits notifications for an application to prepare for the checkpoint and re
 Coordinated Restore is not tied to a particular checkpoint/restore implementation and will able to use existing ones (CRIU, docker checkpoint/restore) and ones yet to be developed.
 
 * [Results](#results)
-* [Builds](#builds)
-* [Examples](#examples)
+* [JDK](#jdk)
+* [User's flow](#users-flow)
+* [Programmer's flow](#programmers-flow)
   * [Jetty tutorial](#jetty-tutorial)
+* [Examples](#examples)
   * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
   * [Quarkus](#quarkus)
   * [Micronaut](#micronaut)
@@ -53,21 +55,78 @@ $ sudo tar zxf jdk.tar.gz
 
 Source code can be found in the containing [repository](https://github.com/org-crac/jdk).
 
-## Examples
+## User's flow
+<!--
+CRaC allows to start Java applications that are alreay initialized and warmed-up.
+Deployment scheme reflects the need to collect the required data.
+-->
 
-Examples are started with Jetty tutorial, followed by a few third-party frameworks and libraries, which demonstrates how CRaC support can be implemented.
+CRaC deployment scheme reflects the need to collect data required for Java application initialization and warm-up.
 
-CRaC support in a framework allows small if any modification to applications using it.
+![Operation Flow](flow.png)
+
+1. a Java application (or container) is deployed in the canary environment
+    * the app processes canary requests that are expected to be most representative for real workload
+2. the running application is checkpointed by some mean
+    * this creates the image of the JVM and application; the is considered as a part of a new deployment bundle
+3. the Java application with the image are deployed in the production environment
+
+**WARNING**: next is a proposal phase and is subject to change
+
+Please refer to (examples)(#examples) or (#jetty-tutorial) sections for getting an application with CRaC support.
+The rest of the section will be written for the [spring-boot](#tomcat--sprint-boot).
+
+For the first, Java command line parameter `-Zcheckpoint:PATH` defines a path to store the image and also allows the java instance to be checkpointed.
+By the current implementation, the image is a directory with image files.
+The directory will be created if it does not exist, but no parent directories are created.
+
+```
+export JAVA_HOME=./jdk
+$JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+```
+
+For the second, in another console: supply canary worload ...
+```
+$ curl localhost:8080
+Greetings from Spring Boot!
+```
+... and make a checkpoint by a jcmd command
+```
+$ jcmd target/spring-boot-0.0.1-SNAPSHOT.jar JDK.checkpoint
+1563568:
+Command executed successfully
+```
+Due to current jcmd implementation, success is always reported in jcmd output, problems are reported in the console of the application.
+
+Another option to make the checkpoint is to invoke the `jdk.crac.Core.checkpointRestore()` method (see [API](#api)).
+More options are possible in the future.
+
+For the third, restore the `cr` image by `-Zrestore:PATH` option
+
+```
+$JAVA_HOME/bin/java -Zrestore:cr
+```
+
+## Programmer's flow
+
+Programs may need to be adjusted for use with Coordinated Restore.
+A program can be restored in a different environment compared to the one where it was checkpointed.
+Dependencies on the environment need to be detected and a coordination code need to be created to update the dependencies after restore.
+Such dependencies are open handles for operating system resources like files and sockets, cached hostname and environment, registration in remote services, ...
+
+CRaC implementation checks for existing dependencies at the checkpoint and aborts checkpoint if one is found.
+Open files and sockets will be detected and reported to user, but unfortunately higher-level dependencies are impossible to detect.
+
+The programmer's flow is demonstrated in the next tutorial.
 
 ### Jetty tutorial
 
-Application may need to be changed to run with CRaC.
-This section reviews all steps needed to use CRaC with a Jetty application.
+This section describes CRaC support implementation for a sample Jetty application.
 
 Full source code for this section can be found in [example-jetty](https://github.com/org-crac/example-jetty) repo.
 Commit history corresponds to the steps of the tutorial with greater details.
 
-Let's take a simple Jetty application as a starting point:
+A simple Jetty application will serve as a starting point:
 ```java
 class ServerManager {
     Server server;
@@ -96,9 +155,9 @@ public class App extends AbstractHandler
 The main thread creates an instance of `ServerManager` that starts managing a jetty instance.
 The thread then exits, leaving the jetty instance a single non-daemon thread.
 
-Java with CRaC needs to be configured in runtime.
-Java argument `-Zcheckpoint:PATH` defines a path to store the image.
-By current implementation it is a directory that will be created if doesn't exist and filled with image files.
+Build and start the example.
+Java argument `-Zcheckpoint:PATH` enables CRaC and defines a path to store the image.
+
 ```sh
 $ mvn package
 $ $JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/example-jetty-1.0-SNAPSHOT.jar
@@ -108,22 +167,26 @@ $ $JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/example-jetty-1.0-SNAPSHOT.jar
 2020-06-29 18:01:33.047:INFO:oejs.Server:main: Started @406ms
 ```
 
-This instance works as usual and can handle a desired workload that will warm-up
-the application and the JVM:
+Warm-up the application:
 ```
 $ curl localhost:8080
 Hello World
 ```
 
-After warm-up completed, the checkpoint can be requrested via an API call or via `jcmd` command (more ways may be possible in the future).
-We can try to use `jcmd` now:
+Use `jcmd` to trigger checkpoint:
 
 ```
 $ jcmd target/example-jetty-1.0-SNAPSHOT.jar JDK.checkpoint
 80694:
 Command executed successfully
 ```
-Due to jcmd implementation, success is always reported and problems if any are reported in the console of the application.
+
+Current jcmd implementation always reports success.
+For now, refer to the console of the application for diagnostic output.
+In the future all diagnostic output will be provided by `jcmd`.
+
+The expected output of the application is next.
+The checkpoint cannot be created with a listening socket, the exception is thrown.
 
 ```
 jdk.crac.impl.CheckpointOpenSocketException: tcp6 localAddr :: localPort 8080 remoteAddr :: remotePort 0
@@ -133,8 +196,6 @@ jdk.crac.impl.CheckpointOpenSocketException: tcp6 localAddr :: localPort 8080 re
         at java.base/jdk.crac.Core.lambda$checkpointRestoreInternal$0(Core.java:194)
         at java.base/java.lang.Thread.run(Thread.java:832)
 ```
-
-Since the checkpoint cannot be created with a listening socket, the exception is thrown.
 
 Simpliest way to ensure the socket is closed is to shutdown the Jetty instance when checkpoint is started and start the instance again after restore.
 For this:
@@ -190,14 +251,14 @@ To prevent this and for simplicity of example, we add another non-daemon thread 
     }
 ```
 
-Once we try `jcmd` again the next is printed on the app console and the app exits:
+Now `jcmd` should make the app to print next in the console and exit:
 ```
 2020-06-29 18:01:56.566:INFO:oejs.AbstractConnector:Thread-9: Stopped ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 CR: Checkpoint ...
 Killed
 ```
 
-The path provided in the command line argument now contain the image that can be used to start another instance of the app:
+The image can be used to start another instances:
 ```
 $ $JAVA_HOME/bin/java -Zrestore:cr
 2020-06-29 18:06:45.939:INFO:oejs.Server:Thread-9: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
