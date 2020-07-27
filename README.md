@@ -341,21 +341,36 @@ gradle assemble
 
 ## API
 
-[Javadoc](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html) provides full description of the new OpenJDK API.
+The CRaC API is not a part of Java SE specification.
+We hope that eventually it will be there, until then there are different packages that can be used.
 
-### org.crac
+### `jdk.crac`
 
-`jdk.crac` API is available only in JDKs and JREs with CRaC implementation.
-So an arbitrary Java distribution will not be able to build and run a code that uses this API.
+The package is available in the [CRaC JDK](#JDK).
+* [javadoc](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html)
 
-[org.crac](https://github.com/org-crac/org.crac) is designed to provide smooth CRaC adoption.
-It allows a CRaC-aware application to be built and run on any Java8+ implementation.
+This is the first API that is likely to get implementation.
 
-For compile-time, `org.crac` API totally mirrors `jdk.crac` API.
+### `javax.crac`
 
-For runtime, org.crac uses reflection to detect CRaC implementation availability.
-If the one is presented, all requests to `org.crac` are passed to the `jdk.crac`.
-It the one is not available, all requests are forwarded to a dummy implementation that allows an application to run but not to use CRaC:
+The package is a mirror of `jdk.crac` except the package name.
+It is available in [`javax-crac` branch](https://github.com/org-crac/jdk/tree/javax-crac) of CRaC JDK and in [`javax-crac` release](https://github.com/org-crac/jdk/releases/tag/release-javax-crac) builds.
+
+This is the API that will be proposed to inclussion into Java SE specification.
+Until then, the use of the package is discuraged.
+
+### `org.crac`
+
+The package is provided by [org.crac](https://github.com/org-crac/org.crac) compatibility library.
+
+The org.crac is designed to provide smooth CRaC adoption.
+Users of the library can build against and use CRaC API on Java runtimes with `jdk.crac`, `javax.crac` (in the future), or without any implementation.
+* In compile-time, `org.crac` package totally mirrors `jdk.crac` and `javax.crac`.
+* In runtime, org.crac uses reflection to detect CRaC implementation.
+If the one is available, all requests to `org.crac` are passed to the implementation.
+Otherwise, requests are forwarded to a dummy implementation.
+
+The dummy implementation allows an application to run but not to use CRaC:
 * resources can be registered for notification,
 * checkpoint request fails with an exception.
 
