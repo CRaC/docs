@@ -6,7 +6,11 @@ A Java application and JVM are started from an image in a warmed-up form.
 The image is created from a running Java instance at arbitrary point of time ("checkpoint").
 The start from the image ("restore") continues from the point when checkpoint was made.
 
-Coordinated Restore at Checkpoint undisruptively introduces new checkpoint and restore phases in Java application lifecycle.
+The restore in general is faster than initialization.
+After the restore, Java runtime performance is also on-par with the one at the checkpoint.
+So, after proper warm-up before the checkpoint, restored Java instance is able to deliver the best runtime characteristics immediately.
+
+Coordinated Restore undisruptively introduces new before-checkpoint and after-restore phases in Java application lifecycle.
 In contrast with uncoordinated checkpoint/restore, coordination allows restored Java applications to behave differently.
 For example, it is possible to react on changes in execution environment that happened since checkpoint was done.
 
@@ -66,10 +70,11 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 ![Operation Flow](flow.png)
 
 1. a Java application (or container) is deployed in the canary environment
-    * the app processes canary requests that are expected to be most representative for real workload
+    * the app processes canary requests that triggers class loading and JIT compilation
 2. the running application is checkpointed by some mean
-    * this creates the image of the JVM and application; the is considered as a part of a new deployment bundle
+    * this creates the image of the JVM and application; the image is considered as a part of a new deployment bundle
 3. the Java application with the image are deployed in the production environment
+    * the restored Java process uses loaded classes from and JIT code from the immediately
 
 **WARNING**: next is a proposal phase and is subject to change
 
