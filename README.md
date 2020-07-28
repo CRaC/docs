@@ -60,6 +60,7 @@ To reproduce you need to create a workspace directory and clone along next repos
 * [example-spring-boot](https://github.com/org-crac/example-spring-boot)
 * [example-quarkus](https://github.com/org-crac/example-quarkus)
 * [example-micronaut](https://github.com/org-crac/example-micronaut)
+* [example-xml-transform](https://github.com/org-crac/example-xml-transform)
 
 You need to build examples according [Examples](#examples) section.
 
@@ -119,8 +120,8 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 
 **WARNING**: next is a proposal phase and is subject to change
 
-Please refer to (examples)(#examples) or (#jetty-tutorial) sections for getting an application with CRaC support.
-The rest of the section will be written for the [spring-boot](#tomcat--sprint-boot).
+Please refer to [examples](#examples) sections or [step-by-step guide](STEP-BY-STEP.md) to get an application with CRaC support.
+The rest of the section is written for the [spring-boot example](#tomcat--sprint-boot).
 
 For the first, Java command line parameter `-Zcheckpoint:PATH` defines a path to store the image and also allows the java instance to be checkpointed.
 By the current implementation, the image is a directory with image files.
