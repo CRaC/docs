@@ -24,15 +24,14 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
 * [JDK](#jdk)
 * [User's flow](#users-flow)
 * [Programmer's flow](#programmers-flow)
-  * [Jetty tutorial](#jetty-tutorial)
+  * [API](#api)
+    * [`jdk.crac`](#`jdkcrac`)
+    * [`javax.crac`](#`javaxcrac`)
+    * [`org.crac`](#`orgcrac`)
 * [Examples](#examples)
   * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
   * [Quarkus](#quarkus)
   * [Micronaut](#micronaut)
-* [API](#api)
-  * [`jdk.crac`](#`jdkcrac`)
-  * [`javax.crac`](#`javaxcrac`)
-  * [`org.crac`](#`orgcrac`)
 * [Implemenation details](#implemenation-details)
 
 ## Results
@@ -99,7 +98,7 @@ The archive should be extracted with
 $ sudo tar zxf jdk14-crac.tar.gz
 ````
 
-Source code can be found in the containing [repository](https://github.com/org-crac/jdk).
+The source code can be found in the corresponding [repository](https://github.com/org-crac/jdk).
 
 ## User's flow
 <!--
@@ -156,169 +155,60 @@ $JAVA_HOME/bin/java -Zrestore:cr
 
 ## Programmer's flow
 
-Programs may need to be adjusted for use with Coordinated Restore.
-A program can be restored in a different environment compared to the one where it was checkpointed.
-Dependencies on the environment need to be detected and a coordination code need to be created to update the dependencies after restore.
-Such dependencies are open handles for operating system resources like files and sockets, cached hostname and environment, registration in remote services, ...
+Programs may need to be adjusted for use with Coordinated Restore at Checkpoint.
 
-CRaC implementation checks for existing dependencies at the checkpoint and aborts checkpoint if one is found.
-Open files and sockets will be detected and reported to user, but unfortunately higher-level dependencies are impossible to detect.
+A [step-by-step guide](STEP-BY-STEP.md) provides information on how to implement the CRaC support in the code.
 
-The programmer's flow is demonstrated in the next tutorial.
+Another option is to use an existing framework with CRaC support.
+There are a few frameworks available, an application need to be configured to use some of them.
+Possible configuration changes are below.
+* [spring-boot](https://github.com/org-crac/example-spring-boot/compare/base..master)
+* [quarkus](https://github.com/org-crac/example-quarkus/compare/base..master)
+* [micronaut](https://github.com/org-crac/example-micronaut/compare/base..master)
 
-### Jetty tutorial
 
-This section describes CRaC support implementation for a sample Jetty application.
+### API
 
-Full source code for this section can be found in [example-jetty](https://github.com/org-crac/example-jetty) repo.
-Commit history corresponds to the steps of the tutorial with greater details.
+The CRaC API is not a part of Java SE specification.
+We hope that eventually it will be there, until then there are different packages that can be used.
 
-A simple Jetty application will serve as a starting point:
-```java
-class ServerManager {
-    Server server;
+#### `jdk.crac`
 
-    public ServerManager(int port, Handler handler) throws Exception {
-        server = new Server(8080);
-        server.setHandler(handler);
-        server.start();
-    }
-}
+* [javadoc](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html)
 
-public class App extends AbstractHandler
-{
-    static ServerManager serverManager;
+This is the API that is implemented in the [CRaC JDK](#JDK).
 
-    public void handle(...) {
-        response.getWriter().println("Hello World");
-    }
+Please refer to [`org.crac`](#orgcrac) if you are looking to add CRaC support to a code that should also work on a regular JDK/JRE.
 
-    public static void main(String[] args) throws Exception {
-        serverManager = new ServerManager(8080, new App());
-    }
-}
-```
+#### `javax.crac`
 
-The main thread creates an instance of `ServerManager` that starts managing a jetty instance.
-The thread then exits, leaving the jetty instance a single non-daemon thread.
+The package is a mirror of `jdk.crac` except the package name.
+It is available in [`javax-crac` branch](https://github.com/org-crac/jdk/tree/javax-crac) of CRaC JDK and in [`javax-crac` release](https://github.com/org-crac/jdk/releases/tag/release-javax-crac) builds.
 
-Build and start the example.
-Java argument `-Zcheckpoint:PATH` enables CRaC and defines a path to store the image.
+This is the API that will be proposed to inclussion into Java SE specification.
+Until then, the use of the package is discuraged.
 
-```sh
-$ mvn package
-$ $JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/example-jetty-1.0-SNAPSHOT.jar
-2020-06-29 18:01:32.944:INFO::main: Logging initialized @293ms to org.eclipse.jetty.util.log.StdErrLog
-2020-06-29 18:01:33.003:INFO:oejs.Server:main: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
-2020-06-29 18:01:33.045:INFO:oejs.AbstractConnector:main: Started ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-2020-06-29 18:01:33.047:INFO:oejs.Server:main: Started @406ms
-```
+#### `org.crac`
 
-Warm-up the application:
-```
-$ curl localhost:8080
-Hello World
-```
+The package is provided by [org.crac](https://github.com/org-crac/org.crac) compatibility library.
 
-Use `jcmd` to trigger checkpoint:
+The org.crac is designed to provide smooth CRaC adoption.
+Users of the library can build against and use CRaC API on Java runtimes with `jdk.crac`, `javax.crac`, or without any implementation.
+* In compile-time, `org.crac` package totally mirrors `jdk.crac` and `javax.crac`.
+* In runtime, org.crac uses reflection to detect CRaC implementation.
+If the one is available, all requests to `org.crac` are passed to the implementation.
+Otherwise, requests are forwarded to a dummy implementation.
 
-```
-$ jcmd target/example-jetty-1.0-SNAPSHOT.jar JDK.checkpoint
-80694:
-Command executed successfully
-```
-
-Current jcmd implementation always reports success.
-For now, refer to the console of the application for diagnostic output.
-In the future all diagnostic output will be provided by `jcmd`.
-
-The expected output of the application is next.
-The checkpoint cannot be created with a listening socket, the exception is thrown.
-
-```
-jdk.crac.impl.CheckpointOpenSocketException: tcp6 localAddr :: localPort 8080 remoteAddr :: remotePort 0
-        at java.base/jdk.crac.Core.translateJVMExceptions(Core.java:80)
-        at java.base/jdk.crac.Core.checkpointRestore1(Core.java:137)
-        at java.base/jdk.crac.Core.checkpointRestore(Core.java:177)
-        at java.base/jdk.crac.Core.lambda$checkpointRestoreInternal$0(Core.java:194)
-        at java.base/java.lang.Thread.run(Thread.java:832)
-```
-
-Simpliest way to ensure the socket is closed is to shutdown the Jetty instance when checkpoint is started and start the instance again after restore.
-For this:
-
-1. Implement methods that are used for notification
-     ```java
-    import jdk.crac.Context;
-    import jdk.crac.Core;
-    import jdk.crac.Resource;
-
-    class ServerManager implements Resource {
-    ...
-        @Override
-        public void beforeCheckpoint(Context<? extends Resource> context) throws Exception {
-            server.stop();
-        }
-
-        @Override
-        public void afterRestore(Context<? extends Resource> context) throws Exception {
-            server.start();
-        }
-    }
-    ```
-2. Register the object in a `Context` that will invoke the `Resource`'s methods as notification.
-There is a global `Context` that can be used as default choice.
-     ```java
-        public ServerManager(int port, Handler handler) throws Exception {
-            ...
-            Core.getGlobalContext().register(this);
-        }
-    ```
-
-**N.B.**: Using of `jdk.crac` API makes compilation and execution of the example possible only on Java implementations with CRaC.
-Please refer to [org.crac](#orgcrac) section for how to handle the problem.
-
-This example is a special by presence of a single non-daemon thread owned by Jetty that keeps JVM from exit.
-When `server.stop()` is called the thread exits and so does the JVM instead of the checkpoint.
-To prevent this and for simplicity of example, we add another non-daemon thread that makes JVM running when the Jetty stops.
-```java
-    public ServerManager(int port, Handler handler) throws Exception {
-        ...
-        Core.getGlobalContext().register(this);
-
-        preventExitThread = new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(1_000_000);
-                } catch (InterruptedException e) {
-                }
-            }
-        });
-        preventExitThread.start();
-    }
-```
-
-Now `jcmd` should make the app to print next in the console and exit:
-```
-2020-06-29 18:01:56.566:INFO:oejs.AbstractConnector:Thread-9: Stopped ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-CR: Checkpoint ...
-Killed
-```
-
-The image can be used to start another instances:
-```
-$ $JAVA_HOME/bin/java -Zrestore:cr
-2020-06-29 18:06:45.939:INFO:oejs.Server:Thread-9: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
-2020-06-29 18:06:45.942:INFO:oejs.AbstractConnector:Thread-9: Started ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-2020-06-29 18:06:45.943:INFO:oejs.Server:Thread-9: Started @293756ms
-```
+The dummy implementation allows an application to run but not to use CRaC:
+* resources can be registered for notification,
+* checkpoint request fails with an exception.
 
 ## Examples
 
 CRaC support in a framework allows small if any modification to applications using it.
 Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
 
-To build the code below, you may need GitHub authorization.
+To build the code below, you need GitHub authorization.
 1. Create once a [Personal Access Token (PAK)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) with [packages scope](https://docs.github.com/en/packages/publishing-and-managing-packages/about-github-packages#about-tokens).
 2. Provide the created PAK into `~/.m2/settings.xml` as described in [the manual](https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages). Minimal file looks like
 ```
@@ -380,41 +270,6 @@ gradle assemble
 * [example-micronaut](https://github.com/org-crac/example-micronaut)
   * [patch](https://github.com/org-crac/example-micronaut/compare/base..master)
   * [CI](https://github.com/org-crac/example-micronaut/runs/820520724)
-
-## API
-
-The CRaC API is not a part of Java SE specification.
-We hope that eventually it will be there, until then there are different packages that can be used.
-
-### `jdk.crac`
-
-The package is available in the [CRaC JDK](#JDK).
-* [javadoc](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html)
-
-This is the first API that is likely to get implementation.
-
-### `javax.crac`
-
-The package is a mirror of `jdk.crac` except the package name.
-It is available in [`javax-crac` branch](https://github.com/org-crac/jdk/tree/javax-crac) of CRaC JDK and in [`javax-crac` release](https://github.com/org-crac/jdk/releases/tag/release-javax-crac) builds.
-
-This is the API that will be proposed to inclussion into Java SE specification.
-Until then, the use of the package is discuraged.
-
-### `org.crac`
-
-The package is provided by [org.crac](https://github.com/org-crac/org.crac) compatibility library.
-
-The org.crac is designed to provide smooth CRaC adoption.
-Users of the library can build against and use CRaC API on Java runtimes with `jdk.crac`, `javax.crac` (in the future), or without any implementation.
-* In compile-time, `org.crac` package totally mirrors `jdk.crac` and `javax.crac`.
-* In runtime, org.crac uses reflection to detect CRaC implementation.
-If the one is available, all requests to `org.crac` are passed to the implementation.
-Otherwise, requests are forwarded to a dummy implementation.
-
-The dummy implementation allows an application to run but not to use CRaC:
-* resources can be registered for notification,
-* checkpoint request fails with an exception.
 
 ## Implemenation details
 
