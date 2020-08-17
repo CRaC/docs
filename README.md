@@ -123,13 +123,13 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 Please refer to [examples](#examples) sections or [step-by-step guide](STEP-BY-STEP.md) to get an application with CRaC support.
 The rest of the section is written for the [spring-boot example](#tomcat--sprint-boot).
 
-For the first, Java command line parameter `-Zcheckpoint:PATH` defines a path to store the image and also allows the java instance to be checkpointed.
+For the first, Java command line parameter `-XX:CRaCCheckpointTo=PATH` defines a path to store the image and also allows the java instance to be checkpointed.
 By the current implementation, the image is a directory with image files.
 The directory will be created if it does not exist, but no parent directories are created.
 
 ```
 export JAVA_HOME=./jdk
-$JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
 For the second, in another console: supply canary worload ...
@@ -148,10 +148,10 @@ Due to current jcmd implementation, success is always reported in jcmd output, p
 Another option to make the checkpoint is to invoke the `jdk.crac.Core.checkpointRestore()` method (see [API](#api)).
 More options are possible in the future.
 
-For the third, restore the `cr` image by `-Zrestore:PATH` option
+For the third, restore the `cr` image by `-XX:CRaCRestoreFrom=PATH` option
 
 ```
-$JAVA_HOME/bin/java -Zrestore:cr
+$JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
 ```
 
 ## Programmer's flow

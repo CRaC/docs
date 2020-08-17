@@ -42,11 +42,11 @@ The main thread creates an instance of `ServerManager` that starts managing a je
 The thread then exits, leaving the jetty instance a single non-daemon thread.
 
 Build and start the example.
-Java argument `-Zcheckpoint:PATH` enables CRaC and defines a path to store the image.
+Java argument `-XX:CRaCCheckpointTo=PATH` enables CRaC and defines a path to store the image.
 
 ```sh
 $ mvn package
-$ $JAVA_HOME/bin/java -Zcheckpoint:cr -jar target/example-jetty-1.0-SNAPSHOT.jar
+$ $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/example-jetty-1.0-SNAPSHOT.jar
 2020-06-29 18:01:32.944:INFO::main: Logging initialized @293ms to org.eclipse.jetty.util.log.StdErrLog
 2020-06-29 18:01:33.003:INFO:oejs.Server:main: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
 2020-06-29 18:01:33.045:INFO:oejs.AbstractConnector:main: Started ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
@@ -146,7 +146,7 @@ Killed
 
 The image can be used to start another instances:
 ```
-$ $JAVA_HOME/bin/java -Zrestore:cr
+$ $JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
 2020-06-29 18:06:45.939:INFO:oejs.Server:Thread-9: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
 2020-06-29 18:06:45.942:INFO:oejs.AbstractConnector:Thread-9: Started ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 2020-06-29 18:06:45.943:INFO:oejs.Server:Thread-9: Started @293756ms
