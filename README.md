@@ -247,9 +247,9 @@ gradle assemble
 * [Tomcat](https://github.com/org-crac/tomcat) is a CRaC-enabled Tomcat
   * [packages](https://github.com/org-crac/tomcat/packages) is a maven repo with prebuilt packages
   * patches implementing CRaC support:
-    * [tomcat-embed](https://github.com/org-crac/tomcat/compare/8.5.x..release-crac-embed) (used by spring-boot-example)
-    * [tomcat-jdbc](https://github.com/org-crac/tomcat/compare/release-crac-embed..release-crac-jdbc)
-    * [standalone Tomcat](https://github.com/org-crac/tomcat/compare/release-crac-jdbc..crac)
+    * [tomcat-embed](https://github.com/org-crac/tomcat/compare/8.5.x...release-crac-embed) (used by spring-boot-example)
+    * [tomcat-jdbc](https://github.com/org-crac/tomcat/compare/release-crac-embed...release-crac-jdbc)
+    * [standalone Tomcat](https://github.com/org-crac/tomcat/compare/release-crac-jdbc...crac)
 * [example-spring-boot](https://github.com/org-crac/example-spring-boot) is a sample Spring Boot applicaton with Tomcat
   * [patch](https://github.com/org-crac/example-spring-boot/compare/base..master) demonstrates changes made to use Tomcat with CRaC
   * [CI](https://github.com/org-crac/example-spring-boot/runs/820527073) is a run of the application on CRaC
