@@ -175,7 +175,7 @@ We hope that eventually it will be there, until then there are different package
 
 #### `jdk.crac`
 
-* [javadoc](https://org-crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html)
+* [javadoc](https://crac.github.io/jdk/jdk-crac/api/java.base/jdk/crac/package-summary.html)
 
 This is the API that is implemented in the [CRaC JDK](#JDK).
 
