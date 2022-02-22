@@ -92,14 +92,14 @@ Last command regenerates graphs in the `docs`.
 
 ## JDK
 
-We use [JDK builds](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac) to get results for examples.
+OpenJDK CRaC Project is developed in https://github.com/openjdk/crac.
 
-The archive should be extracted with
+Latest release can be found in https://crac.github.io/openjdk-builds/. The JDK archive should be extracted with `sudo`:
 ```
-$ sudo tar zxf jdk14-crac.tar.gz
+$ sudo tar zxf <jdk>.tar.gz
 ````
 
-The source code can be found in the corresponding [repository](https://github.com/org-crac/jdk).
+Results above were obtained with preliminary [JDK builds](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).
 
 ## User's flow
 <!--
