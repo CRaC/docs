@@ -214,8 +214,8 @@ Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.git
 
 ### Tomcat / Sprint Boot
 
-* [Tomcat](https://github.com/CRaC/tomcat) is a CRaC-enabled Tomcat, providing several modules
-  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.org.apache.tomcat.embed/tomcat-embed-core) packages
+* [Tomcat with CRaC](https://github.com/CRaC/tomcat) provides several modules
+  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.org.apache.tomcat.embed/tomcat-embed-core)
   * [Changes](https://github.com/CRaC/tomcat/compare/8.5.75..crac) are:
     * for Tomcat Embed (used by spring-boot-example below):
       * `java/org/apache/tomcat/util/net/AbstractEndpoint.java`
@@ -228,27 +228,30 @@ Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.git
       * `bin/`, `conf/`
     * for general build infrastructure:
       * `build.xml`, `build.properties.default`
-* [example-spring-boot](https://github.com/CRaC/example-spring-boot) is a sample Spring Boot applicaton using CRaC Tomcat
-  * [Changes](https://github.com/CRaC/example-spring-boot/compare/base..master) to the base application
+* [Example-spring-boot](https://github.com/CRaC/example-spring-boot) is a sample Spring Boot applicaton using CRaC Tomcat
+  * [Build script changes](https://github.com/CRaC/example-spring-boot/compare/base..master)
   * [CI](https://github.com/CRaC/example-spring-boot/actions) runs the application on CRaC
 
 ### Quarkus
 
-* [Quarkus](https://github.com/CRaC/quarkus)
-  * [packages](https://github.com/CRaC/quarkus/packages)
-  * [patch](https://github.com/CRaC/quarkus/compare/master..crac-master)
-* [example-quarkus](https://github.com/CRaC/example-quarkus)
-  * [patch](https://github.com/CRaC/example-quarkus/compare/base..master)
-  * [CI](https://github.com/CRaC/example-quarkus/runs/816817029)
+* [Quarkus with CRaC](https://github.com/CRaC/quarkus)
+  * [GitHub Packages](https://github.com/CRaC/quarkus/packages)
+  * [Changes](https://github.com/CRaC/quarkus/compare/master..crac-master) are:
+    * for managing vertx-http: `extensions/vertx-http/`
+* [Example-quarkus](https://github.com/CRaC/example-quarkus) is a sample app on Quarkus with CRaC
+  * [Build script changes](https://github.com/CRaC/example-quarkus/compare/base..master)
+  * [CI](https://github.com/CRaC/example-quarkus/actions)
 
 ### Micronaut
 
-* [Micronaut](https://github.com/CRaC/micronaut-core)
-  * [packages](https://github.com/CRaC/micronaut-core/packages)
-  * [patch](https://github.com/CRaC/micronaut-core/compare/1.3.x..crac-1.3.x)
-* [example-micronaut](https://github.com/CRaC/example-micronaut)
-  * [patch](https://github.com/CRaC/example-micronaut/compare/base..master)
-  * [CI](https://github.com/CRaC/example-micronaut/runs/820520724)
+* [Micronaut with CRaC](https://github.com/CRaC/micronaut-core)
+  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.io.micronaut)
+  * [Changes](https://github.com/CRaC/micronaut-core/compare/v1.3.7..crac-v1.3.7) are:
+    * for managing Netty: `http-server-netty/`
+    * for publishing artifacts: `gradle.properties`, `gradle/*`
+* [Example-micronaut](https://github.com/CRaC/example-micronaut) is a sample app on Micronaut with CRaC
+  * [Build script changes](https://github.com/CRaC/example-micronaut/compare/base..master)
+  * [CI](https://github.com/CRaC/example-micronaut/actions)
 
 ## Implemenation details
 
