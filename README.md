@@ -162,7 +162,7 @@ A [step-by-step guide](STEP-BY-STEP.md) provides information on how to implement
 
 Another option is to use an existing framework with CRaC support.
 There are a few frameworks available, an application need to be configured to use some of them.
-Possible configuration changes are below.
+Possible configuration changes for applications are below.
 * [spring-boot](https://github.com/org-crac/example-spring-boot/compare/base..master)
 * [quarkus](https://github.com/org-crac/example-quarkus/compare/base..master)
 * [micronaut](https://github.com/org-crac/example-micronaut/compare/base..master)
@@ -209,72 +209,50 @@ The dummy implementation allows an application to run but not to use CRaC:
 CRaC support in a framework allows small if any modification to applications using it.
 Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
 
-To build the code below, you need GitHub authorization.
-1. Create once a [Personal Access Token (PAK)](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) with [packages scope](https://docs.github.com/en/packages/publishing-and-managing-packages/about-github-packages#about-tokens).
-2. Provide the created PAK into `~/.m2/settings.xml` as described in [the manual](https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-apache-maven-for-use-with-github-packages). Minimal file looks like
-```
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <servers>
-    <server>
-      <id>github</id>
-      <username>YOUR_USERNAME</username>
-      <password>YOUR_PAK</password>
-    </server>
-  </servers>
-</settings>
-```
-3. Export variables for examples that use custom `settings.xml`:
-```
-export GITHUB_ACTOR=YOUR_USERNAME
-export GITHUB_TOKEN=YOUR_PAK
-```
-
-For the actual build instructions please refer to CI links below.
-Examples usually can be built with
-```
-mvn -s settings.xml package
-```
-or
-```
-gradle assemble
-```
+Source code links are below.
+Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.github.crac) under `io.github.crac` artifact-id.
 
 ### Tomcat / Sprint Boot
 
-* [Tomcat](https://github.com/org-crac/tomcat) is a CRaC-enabled Tomcat
-  * [packages](https://github.com/org-crac/tomcat/packages) is a maven repo with prebuilt packages
-  * patches implementing CRaC support:
-    * [tomcat-embed](https://github.com/org-crac/tomcat/compare/8.5.x...release-crac-embed) (used by spring-boot-example)
-    * [tomcat-jdbc](https://github.com/org-crac/tomcat/compare/release-crac-embed...release-crac-jdbc)
-    * [standalone Tomcat](https://github.com/org-crac/tomcat/compare/release-crac-jdbc...crac)
-* [example-spring-boot](https://github.com/org-crac/example-spring-boot) is a sample Spring Boot applicaton with Tomcat
-  * [patch](https://github.com/org-crac/example-spring-boot/compare/base..master) demonstrates changes made to use Tomcat with CRaC
-  * [CI](https://github.com/org-crac/example-spring-boot/runs/820527073) is a run of the application on CRaC
+* [Tomcat](https://github.com/CRaC/tomcat) is a CRaC-enabled Tomcat, providing several modules
+  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.org.apache.tomcat.embed/tomcat-embed-core) packages
+  * [Changes](https://github.com/CRaC/tomcat/compare/8.5.75..crac) are:
+    * for Tomcat Embed (used by spring-boot-example below):
+      * `java/org/apache/tomcat/util/net/AbstractEndpoint.java`
+      * `res/maven/tomcat-embed-core.pom`
+    * for JDBC Pool library:
+      * `modules/jdbc-pool/`
+    * for standalone Tomcat (Catalina):
+      * `java/org/apache/catalina/`
+      * `java/org/apache/juli/`
+      * `bin/`, `conf/`
+    * for general build infrastructure:
+      * `build.xml`, `build.properties.default`
+* [example-spring-boot](https://github.com/CRaC/example-spring-boot) is a sample Spring Boot applicaton using CRaC Tomcat
+  * [Changes](https://github.com/CRaC/example-spring-boot/compare/base..master) to the base application
+  * [CI](https://github.com/CRaC/example-spring-boot/actions) runs the application on CRaC
 
 ### Quarkus
 
-* [Quarkus](https://github.com/org-crac/quarkus)
-  * [packages](https://github.com/org-crac/quarkus/packages)
-  * [patch](https://github.com/org-crac/quarkus/compare/master..crac-master)
-* [example-quarkus](https://github.com/org-crac/example-quarkus)
-  * [patch](https://github.com/org-crac/example-quarkus/compare/base..master)
-  * [CI](https://github.com/org-crac/example-quarkus/runs/816817029)
+* [Quarkus](https://github.com/CRaC/quarkus)
+  * [packages](https://github.com/CRaC/quarkus/packages)
+  * [patch](https://github.com/CRaC/quarkus/compare/master..crac-master)
+* [example-quarkus](https://github.com/CRaC/example-quarkus)
+  * [patch](https://github.com/CRaC/example-quarkus/compare/base..master)
+  * [CI](https://github.com/CRaC/example-quarkus/runs/816817029)
 
 ### Micronaut
 
-* [Micronaut](https://github.com/org-crac/micronaut-core)
-  * [packages](https://github.com/org-crac/micronaut-core/packages)
-  * [patch](https://github.com/org-crac/micronaut-core/compare/1.3.x..crac-1.3.x)
-* [example-micronaut](https://github.com/org-crac/example-micronaut)
-  * [patch](https://github.com/org-crac/example-micronaut/compare/base..master)
-  * [CI](https://github.com/org-crac/example-micronaut/runs/820520724)
+* [Micronaut](https://github.com/CRaC/micronaut-core)
+  * [packages](https://github.com/CRaC/micronaut-core/packages)
+  * [patch](https://github.com/CRaC/micronaut-core/compare/1.3.x..crac-1.3.x)
+* [example-micronaut](https://github.com/CRaC/example-micronaut)
+  * [patch](https://github.com/CRaC/example-micronaut/compare/base..master)
+  * [CI](https://github.com/CRaC/example-micronaut/runs/820520724)
 
 ## Implemenation details
 
 Current OpenJDK implementation is based on using the CRIU project to create the image.
 
-[CRIU](https://github.com/org-crac/criu) hosts a few changes made to improve CRaC usability.
+[CRIU](https://github.com/CRaC/criu) hosts a few changes made to improve CRaC usability.
 
