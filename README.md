@@ -253,6 +253,16 @@ Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.git
   * [Build script changes](https://github.com/CRaC/example-micronaut/compare/base..master)
   * [CI](https://github.com/CRaC/example-micronaut/actions)
 
+### AWS Lambda
+
+* [AWS Libs with CRaC](https://github.com/CRaC/aws-lambda-java-libs)
+  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.com.amazonaws)
+  * [Changes](https://github.com/CRaC/aws-lambda-java-libs/compare/master...crac) to coordinate the connection with the service
+* [Example-lambda](https://github.com/crac/example-lambda) is a sample Java serverless function on CRaC
+  * [Changes](https://github.com/crac/example-lambda/compare/0182484592feed..master) to the official example
+    * `pom.xml`, `src/**.java` -- the code
+    * the rest is helpers for deployment in as the [container function](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-images.html#gettingstarted-images-package)
+
 ## Implemenation details
 
 Current OpenJDK implementation is based on using the CRIU project to create the image.
