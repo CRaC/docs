@@ -32,6 +32,7 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
   * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
   * [Quarkus](#quarkus)
   * [Micronaut](#micronaut)
+  * [AWS Lambda](#aws-lambda)
 * [Implemenation details](#implemenation-details)
 
 ## Results
