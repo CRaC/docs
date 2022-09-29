@@ -48,6 +48,8 @@ The source code can be found in the [Examples](#examples) section.
 * data was collected in container running `ubuntu:18.04` based image
 * host operating system: archlinux
 
+[jdk14-crac build](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac)
+
 ---
 </p>
 </details>
@@ -99,8 +101,6 @@ Latest release can be found in https://crac.github.io/openjdk-builds/. The JDK a
 ```
 $ sudo tar zxf <jdk>.tar.gz
 ````
-
-Results above were obtained with preliminary [JDK builds](https://github.com/org-crac/jdk/releases/tag/release-jdk-crac).
 
 ## User's flow
 <!--
