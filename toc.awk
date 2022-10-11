@@ -1,3 +1,5 @@
+#!/bin/awk -f
+
 match($0, /^#(#+) (.*)/, m) {
     p = substr(m[1], 2)
     gsub("#", "  ", p)

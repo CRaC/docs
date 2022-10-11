@@ -18,21 +18,24 @@ CRaC implementation creates the checkpoint only if the whole Java instance state
 Resources like open files or sockets are cannot, so it is required to release them when checkpoint is made.
 CRaC emits notifications for an application to prepare for the checkpoint and return to operating state after restore.
 
+With more Java frameworks and libraries adopting CRaC, applications can benefit with little or no changes in the code.
+Moreover, the required amount of changes in the resource management code tends to be small, see examples below.
+
 Coordinated Restore is not tied to a particular checkpoint/restore implementation and will able to use existing ones (CRIU, docker checkpoint/restore) and ones yet to be developed.
 
 * [Results](#results)
 * [JDK](#jdk)
+* [Projects with CRaC support](#projects-with-crac-support)
+  * [Micronaut](#micronaut)
+  * [Quarkus](#quarkus)
+* [Proof-of-Concept CRaC support implementation](#proof-of-concept-crac-support-implementation)
+  * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
+  * [AWS Lambda](#aws-lambda)
 * [User's flow](#users-flow)
 * [Programmer's flow](#programmers-flow)
   * [API](#api)
     * [`jdk.crac`](#jdkcrac)
-    * [`javax.crac`](#javaxcrac)
     * [`org.crac`](#orgcrac)
-* [Examples](#examples)
-  * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
-  * [Quarkus](#quarkus)
-  * [Micronaut](#micronaut)
-  * [AWS Lambda](#aws-lambda)
 * [Implemenation details](#implemenation-details)
 
 ## Results
@@ -97,10 +100,69 @@ Last command regenerates graphs in the `docs`.
 
 OpenJDK CRaC Project is developed in https://github.com/openjdk/crac.
 
-Latest release can be found in https://crac.github.io/openjdk-builds/. The JDK archive should be extracted with `sudo`:
+Latest release can be found in https://crac.github.io/openjdk-builds.
+
 ```
 $ sudo tar zxf <jdk>.tar.gz
-````
+```
+
+**NOTE**: The JDK archive should be extracted with `sudo`.
+
+## Projects with CRaC support
+
+### Micronaut
+
+You can just add `crac` feature at https://micronaut.io/launch!
+
+* [Micronaut CRaC Module](https://micronaut-projects.github.io/micronaut-crac/latest/guide)
+  * Hikari DataSources coordination
+  * Redis coordintation
+* [Build System](https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/#_micronaut_crac_plugin)
+  * a single command to generate a docker image with CRaC image included
+
+Example: https://github.com/CRaC/example-micronaut
+
+### Quarkus
+
+Basic CRaC support is a part of Quarkus [since 2.10.0](https://github.com/quarkusio/quarkus/pull/23950).
+
+Example: https://github.com/CRaC/example-quarkus
+
+## Proof-of-Concept CRaC support implementation
+
+Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
+
+Source code links are below.
+Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.github.crac) under `io.github.crac` artifact-id.
+
+### Tomcat / Sprint Boot
+
+[Tomcat with CRaC](https://github.com/CRaC/tomcat) is modification of Tomcat with CRaC support and it enables CRaC for Spring Boot applications.
+
+Artifacts: https://mvnrepository.com/artifact/io.github.crac.org.apache
+
+Example: https://github.com/CRaC/example-spring-boot ([diff](https://github.com/CRaC/example-spring-boot/compare/base..crac))
+
+Changes: https://github.com/CRaC/tomcat/compare/8.5.75..crac
+* Tomcat Embed (used by spring-boot-example below):
+  * `java/org/apache/tomcat/util/net/AbstractEndpoint.java`
+  * `res/maven/tomcat-embed-core.pom`
+* JDBC Pool library:
+  * `modules/jdbc-pool/`
+* standalone Tomcat (Catalina):
+  * `java/org/apache/catalina/`
+  * `java/org/apache/juli/`
+  * `bin/`, `conf/`
+
+### AWS Lambda
+
+[AWS Libs with CRaC](https://github.com/CRaC/aws-lambda-java-libs) allows implementation of AWS Lambda functions on CRaC JDK.
+
+Artifacts: https://mvnrepository.com/artifact/io.github.crac.com.amazonaws
+
+Example: https://github.com/crac/example-lambda ([diff](https://github.com/crac/example-lambda/compare/0182484592feed..master)) is a sample Java serverless function on CRaC.
+
+Changes: https://github.com/CRaC/aws-lambda-java-libs/compare/master...crac
 
 ## User's flow
 <!--
@@ -162,11 +224,13 @@ Programs may need to be adjusted for use with Coordinated Restore at Checkpoint.
 A [step-by-step guide](STEP-BY-STEP.md) provides information on how to implement the CRaC support in the code.
 
 Another option is to use an existing framework with CRaC support.
-There are a few frameworks available, an application need to be configured to use some of them.
-Possible configuration changes for applications are below.
-* [spring-boot](https://github.com/org-crac/example-spring-boot/compare/base..master)
-* [quarkus](https://github.com/org-crac/example-quarkus/compare/base..master)
-* [micronaut](https://github.com/org-crac/example-micronaut/compare/base..master)
+
+No changes required:
+* Micronaut: https://github.com/CRaC/example-micronaut
+* Quarkus: https://github.com/CRaC/example-quarkus
+
+With configuration changes:
+* Spring-boot/Tomcat: https://github.com/CRaC/example-spring-boot/compare/base..crac
 
 
 ### API
@@ -181,14 +245,6 @@ We hope that eventually it will be there, until then there are different package
 This is the API that is implemented in the [CRaC JDK](#JDK).
 
 Please refer to [`org.crac`](#orgcrac) if you are looking to add CRaC support to a code that should also work on a regular JDK/JRE.
-
-#### `javax.crac`
-
-The package is a mirror of `jdk.crac` except the package name.
-It is available in [`javax-crac` branch](https://github.com/org-crac/jdk/tree/javax-crac) of CRaC JDK and in [`javax-crac` release](https://github.com/org-crac/jdk/releases/tag/release-javax-crac) builds.
-
-This is the API that will be proposed to inclussion into Java SE specification.
-Until then, the use of the package is discuraged.
 
 #### `org.crac`
 
@@ -205,64 +261,6 @@ The dummy implementation allows an application to run but not to use CRaC:
 * resources can be registered for notification,
 * checkpoint request fails with an exception.
 
-## Examples
-
-CRaC support in a framework allows small if any modification to applications using it.
-Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
-
-Source code links are below.
-Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.github.crac) under `io.github.crac` artifact-id.
-
-### Tomcat / Sprint Boot
-
-* [Tomcat with CRaC](https://github.com/CRaC/tomcat) provides several modules
-  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.org.apache.tomcat.embed/tomcat-embed-core)
-  * [Changes](https://github.com/CRaC/tomcat/compare/8.5.75..crac) are:
-    * for Tomcat Embed (used by spring-boot-example below):
-      * `java/org/apache/tomcat/util/net/AbstractEndpoint.java`
-      * `res/maven/tomcat-embed-core.pom`
-    * for JDBC Pool library:
-      * `modules/jdbc-pool/`
-    * for standalone Tomcat (Catalina):
-      * `java/org/apache/catalina/`
-      * `java/org/apache/juli/`
-      * `bin/`, `conf/`
-    * for general build infrastructure:
-      * `build.xml`, `build.properties.default`
-* [Example-spring-boot](https://github.com/CRaC/example-spring-boot) is a sample Spring Boot applicaton using CRaC Tomcat
-  * [Build script changes](https://github.com/CRaC/example-spring-boot/compare/base..master)
-  * [CI](https://github.com/CRaC/example-spring-boot/actions) runs the application on CRaC
-
-### Quarkus
-
-* [Quarkus with CRaC](https://github.com/CRaC/quarkus)
-  * [GitHub Packages](https://github.com/CRaC/quarkus/packages)
-  * [Changes](https://github.com/CRaC/quarkus/compare/master..crac-master) are:
-    * for managing vertx-http: `extensions/vertx-http/`
-* [Example-quarkus](https://github.com/CRaC/example-quarkus) is a sample app on Quarkus with CRaC
-  * [Build script changes](https://github.com/CRaC/example-quarkus/compare/base..master)
-  * [CI](https://github.com/CRaC/example-quarkus/actions)
-
-### Micronaut
-
-* [Micronaut with CRaC](https://github.com/CRaC/micronaut-core)
-  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.io.micronaut)
-  * [Changes](https://github.com/CRaC/micronaut-core/compare/v1.3.7..crac-v1.3.7) are:
-    * for managing Netty: `http-server-netty/`
-    * for publishing artifacts: `gradle.properties`, `gradle/*`
-* [Example-micronaut](https://github.com/CRaC/example-micronaut) is a sample app on Micronaut with CRaC
-  * [Build script changes](https://github.com/CRaC/example-micronaut/compare/base..master)
-  * [CI](https://github.com/CRaC/example-micronaut/actions)
-
-### AWS Lambda
-
-* [AWS Libs with CRaC](https://github.com/CRaC/aws-lambda-java-libs)
-  * [Maven Central](https://mvnrepository.com/artifact/io.github.crac.com.amazonaws)
-  * [Changes](https://github.com/CRaC/aws-lambda-java-libs/compare/master...crac) to coordinate the connection with the service
-* [Example-lambda](https://github.com/crac/example-lambda) is a sample Java serverless function on CRaC
-  * [Changes](https://github.com/crac/example-lambda/compare/0182484592feed..master) to the official example
-    * `pom.xml`, `src/**.java` -- the code
-    * the rest is helpers for deployment in as the [container function](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-images.html#gettingstarted-images-package)
 
 ## Implemenation details
 
