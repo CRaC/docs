@@ -183,7 +183,7 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 
 **WARNING**: next is a proposal phase and is subject to change
 
-Please refer to [examples](#examples) sections or [step-by-step guide](STEP-BY-STEP.md) to get an application with CRaC support.
+Please refer to [examples](#examples) sections, [step-by-step guide](STEP-BY-STEP.md) or [best practices guide](best-practices.md) to get an application with CRaC support.
 The rest of the section is written for the [spring-boot example](#tomcat--sprint-boot).
 
 For the first, Java command line parameter `-XX:CRaCCheckpointTo=PATH` defines a path to store the image and also allows the java instance to be checkpointed.
@@ -221,7 +221,7 @@ $JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
 
 Programs may need to be adjusted for use with Coordinated Restore at Checkpoint.
 
-A [step-by-step guide](STEP-BY-STEP.md) provides information on how to implement the CRaC support in the code.
+A [step-by-step guide](STEP-BY-STEP.md) and [best practices guide](best-practices.md) provide information on how to implement the CRaC support in the code.
 
 Another option is to use an existing framework with CRaC support.
 
