@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Coordinated Restore at Checkpoint (CRaC)</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+        .myButton {
+            -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+            -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+            box-shadow:inset 0px 1px 0px 0px #ffffff;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9));
+            background:-moz-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background:-webkit-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background:-o-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background:-ms-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9',GradientType=0);
+            background-color:#f9f9f9;
+            -moz-border-radius:6px;
+            -webkit-border-radius:6px;
+            border-radius:6px;
+            border:1px solid #dcdcdc;
+            display:inline-block;
+            cursor:pointer;
+            color:#666666;
+            font-family:arial;
+            font-size:16px;
+            font-weight:bold;
+            padding:8px 54px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #ffffff;
+        }
+        .myButton:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9));
+            background:-moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+            background:-webkit-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+            background:-o-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+            background:-ms-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+            background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9',GradientType=0);
+            background-color:#e9e9e9;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <h1>CRaC</h1>
+        <h3>Coordinated Restore at Checkpoint</h3>
+        <p class="view">
+             <a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">
+            View the JavaDoc <small>www.javadoc.io/doc/org.crac/crac</small></a>
+            <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.crac%22">
+            Find on Maven Central <small>org.crac</small></a>
+        </p>
+
+        <h3>Other Useful Links</h3>
+        <p>
+            <a href="https://openjdk.org/projects/crac/" target='_top'>
+                OpenJDK CRaC Project Page <small>openjdk.org/projects/crac/</small></a>
+
+            <a href="https://wiki.openjdk.org/display/crac" target='_top'>
+                OpenJDK CRaC Wiki Page <small>wiki.openjdk.org/display/crac</small></a>
+
+            <a href="https://github.com/CRaC/openjdk-builds" target='_top'>
+                OpenJDK with CRaC Support on GitHub <small>github.com/CRaC/openjdk-builds</small></a>
+
+            <a href="https://github.com/crac/org.crac" target='_top'>
+                Java <small>github.com/crac/org.crac</small></a>
+
+            <a href="https://github.com/CRaC/docs" target='_top'>
+                Examples <small>github.com/CRaC/docs</small></a>
+
+            <a href="https://docs.azul.com/core/crac/crac-introduction" target="_top">
+                Azul CRaC Documentation <small>Azul/crac</small>
+            </a>
+
+        </p>
+
+
+    </header>
+
+
+    <section>
+        <h3>CRaC: Coordinated Restore at Checkpoint.</h3>
+
+        <p>
+            The CRaC (Coordinated Restore at Checkpoint) Project researches coordination of Java programs with mechanisms 
+            to checkpoint (make an image of, snapshot) a Java instance while it is executing. Restoring from 
+            the image could be a solution to some of the problems with the start-up and warm-up times. 
+            The primary aim of the Project is to develop a new standard mechanism-agnostic API to notify 
+            Java programs about the checkpoint and restore events. Other research activities will include, 
+            but will not be limited to, integration with existing checkpoint/restore mechanisms and development 
+            of new ones, changes to JVM and JDK to make images smaller and ensure they are correct.</p>
+        
+        <h3>Authors, Contributors, and License</h3>
+
+        <p>
+            CRaC was originally authored by Anton Kozlov (<a href="https://github.com/AntonKozlov" class="user-mention">@AntonKozlov</a>)
+            and placed in the public domain, as explained at
+            <a href="http://creativecommons.org/publicdomain/zero/1.0/">http://creativecommons.org/publicdomain/zero/1.0/</a>,
+            with contributions by Gil Tene (<a href="https://github.com/giltene" class="user-mention">@giltene</a>)
+        </p>
+
+        <h3>Support or Contact</h3>
+        <p>Please post your questions at <a href="https://foojay.io/today/category/crac/" target="_top">
+            Foojay.io.</a>
+        </p>
+
+    </section>
+
+    </footer>
+</div>
+<script src="javascripts/scale.fix.js"></script>
+
+</body>
+</html>
