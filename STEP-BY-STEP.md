@@ -44,6 +44,19 @@ The thread then exits, leaving the jetty instance a single non-daemon thread.
 Build and start the example.
 Java argument `-XX:CRaCCheckpointTo=PATH` enables CRaC and defines a path to store the image.
 
+Use CRaC API requires adding [org.crac](https://github.com/CRaC/org.crac) as a maven dependency,
+- In compile-time, org.crac package totally mirrors jdk.crac and javax.crac.
+- In runtime, org.crac uses reflection to detect CRaC implementation. If the one is available,
+all requests to org.crac are passed to the implementation. Otherwise, requests are forwarded to a dummy implementation.
+
+```
+<dependency>
+  <groupId>org.crac</groupId>
+  <artifactId>crac</artifactId>
+  <version>0.1.3</version>
+</dependency>
+```
+
 ```sh
 $ mvn package
 $ $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/example-jetty-1.0-SNAPSHOT.jar
@@ -88,9 +101,9 @@ For this:
 
 1. Implement methods that are used for notification
      ```java
-    import jdk.crac.Context;
-    import jdk.crac.Core;
-    import jdk.crac.Resource;
+    import org.crac.Context;
+    import org.crac.Core;
+    import org.crac.Resource;
 
     class ServerManager implements Resource {
     ...
@@ -113,9 +126,6 @@ There is a global `Context` that can be used as default choice.
             Core.getGlobalContext().register(this);
         }
     ```
-
-**N.B.**: Using of `jdk.crac` API makes compilation and execution of the example possible only on Java implementations with CRaC.
-Please refer to [org.crac](README.md#orgcrac) section for how to handle the problem.
 
 This example is a special by presence of a single non-daemon thread owned by Jetty that keeps JVM from exit.
 When `server.stop()` is called the thread exits and so does the JVM instead of the checkpoint.
