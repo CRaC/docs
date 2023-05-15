@@ -17,35 +17,19 @@
     <header>
         <h1>CRaC</h1>
         <h3>Coordinated Restore at Checkpoint</h3>
-        <ul>
-            <li>
-                <strong>org.crac</strong> Java library available on <a href="https://central.sonatype.com/namespace/org.crac">Maven Central</a>. <br/>The library can be used to develop using CRaC API on Java runtimes with no CRaC support (spericially if you are developing on macOS or Windows)
-            </li>
-            <li>
-                The <a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">JavaDoc</a> for <strong>org.crack</strong> Library
-            </li>
-        </ul>
+        <p>
+            <a href="https://central.sonatype.com/namespace/org.crac">org.crac Java library <small>Maven Central</small></a>
+            <a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">JavaDoc for the org.crack<small>JavaDoc</small></a>
+        </p>
 
         <h3>Other Useful Links</h3>
-        <ul>
-            <li>
-                OpenJDK CRaC Project <a href="https://openjdk.org/projects/crac/" target='_top'>Page</a>
-            </li>
-            <li>
-                OpenJDK CRaC Project <a href="https://wiki.openjdk.org/display/crac" target='_top'>Wiki Page</a>
-            </li>
-            <li>
-                OpenJDK with CRaC on <a href="https://github.com/CRaC/openjdk-builds" target='_top'>GitHub</a>
-            </li>
-            <li>
-                <strong>org.crac</strong> Java library on <a href="https://github.com/crac/org.crac" target='_top'>GitHub</a>
-            </li>
-            <li>
-                Examples of using CRaC on <a href="https://github.com/CRaC/docs" target='_top'>GitHub</a>
-            </li>
-            <li>
-                Azul CRaC <a href="https://docs.azul.com/core/crac/crac-introduction" target="_top">Documentation</a>
-            </li>
+        <p>
+            <a href="https://openjdk.org/projects/crac/" target='_top'>OpenJDK CRaC Project <small>Page</small></a>
+            <a href="https://wiki.openjdk.org/display/crac" target='_top'>OpenJDK CRaC Project <small>Wiki Page</small></a>
+            <a href="https://github.com/CRaC/openjdk-builds" target='_top'>OpenJDK with CRaC <small>GitHub</small></a>
+            <a href="https://github.com/crac/org.crac" target='_top'>org.crac Java library <small>GitHub</small></a>
+            <a href="https://github.com/CRaC/docs" target='_top'>Examples of using CRaC <small>GitHub</small></a>
+            <a href="https://docs.azul.com/core/crac/crac-introduction" target="_top">Azul CRaC Documentation <small>Azul.com</small></a>
         </p>
 
 
@@ -56,27 +40,33 @@
         <h3>CRaC: Coordinated Restore at Checkpoint.</h3>
 
         <p>
-            The CRaC (Coordinated Restore at Checkpoint) Project researches coordination of Java programs with mechanisms 
-            to checkpoint (make an image of, snapshot) a Java instance while it is executing. Restoring from 
-            the image could be a solution to some of the problems with the start-up and warm-up times. 
+            The CRaC (Coordinated Restore at Checkpoint) Project researches the coordination of Java programs with mechanisms 
+            to checkpoint (make an image of, snapshot) a Java instance while executing. Restoring from 
+            the image could solve some of the problems with the start-up and warm-up times. 
             The primary aim of the Project is to develop a new standard mechanism-agnostic API to notify 
             Java programs about the checkpoint and restore events. Other research activities will include, 
             but will not be limited to, integration with existing checkpoint/restore mechanisms and development 
-            of new ones, changes to JVM and JDK to make images smaller and ensure they are correct.</p>
+            of new ones, changes to JVM and JDK to make images smaller and ensure they are correct.
+        </p>
+        <p>
+            To develop using CRaC API for the Java runtimes with no CRaC support (spericially if you are developing on macOS or Windows),
+            use the <a href="https://central.sonatype.com/namespace/org.crac">org.crac Java library</a> 
+            (<a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">JavaDoc</a>).
+        </p>
         
         <h3>Projects with CRaC Support</h3>
 
         <ol>
             <li>
-                <a href="http://micronaut.io"> Micronaut</a> added support for CRaC to the <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide" target="_top">Micronaut CRaC Module</a> (Hikari DataSources and Redis coordintation) and the <a href="https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/#_micronaut_crac_plugin" target="_top">Build System</a> (a single command to generate a docker image with CRaC image included
+                <a href="http://micronaut.io"> Micronaut</a> added support for CRaC to the <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide" target="_top">Micronaut CRaC Module</a> (Hikari DataSources and Redis coordination) and the <a href="https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/#_micronaut_crac_plugin" target="_top">Build System</a> (a single command to generate a docker image with CRaC image included
                 ). See <a href="https://github.com/CRaC/example-micronaut" target="_top">example</a>.
                 <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide/" target='_top'></a>
 
 
-                To use CRaC with Micronaut, you can add "crac" feature at <a href="https://micronaut.io/launch" target="_top">Micronaut Launch</a>.
+                To use CRaC with Micronaut, you can add the "crac" feature at <a href="https://micronaut.io/launch" target="_top">Micronaut Launch</a>.
             </li>
             <li>
-                Basic CRaC support is a part of <a href="https://quarkus.io" target='_top'>Quarkus</a> since <a href="https://github.com/quarkusio/quarkus/pull/23950" target='_top'>2.10.0</a>. 
+                Basic CRaC support has been a part of <a href="https://quarkus.io" target='_top'>Quarkus</a> since <a href="https://github.com/quarkusio/quarkus/pull/23950" target='_top'>2.10.0</a>. 
                 See <a href="https://github.com/CRaC/example-quarkus" target='_top'>example</a>.    
             </li>
         </ol>
