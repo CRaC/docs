@@ -11,83 +11,41 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <style>
-        .myButton {
-            -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-            -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-            box-shadow:inset 0px 1px 0px 0px #ffffff;
-            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9));
-            background:-moz-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
-            background:-webkit-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
-            background:-o-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
-            background:-ms-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
-            background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9',GradientType=0);
-            background-color:#f9f9f9;
-            -moz-border-radius:6px;
-            -webkit-border-radius:6px;
-            border-radius:6px;
-            border:1px solid #dcdcdc;
-            display:inline-block;
-            cursor:pointer;
-            color:#666666;
-            font-family:arial;
-            font-size:16px;
-            font-weight:bold;
-            padding:8px 54px;
-            text-decoration:none;
-            text-shadow:0px 1px 0px #ffffff;
-        }
-        .myButton:hover {
-            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9));
-            background:-moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
-            background:-webkit-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
-            background:-o-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
-            background:-ms-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
-            background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9',GradientType=0);
-            background-color:#e9e9e9;
-        }
-        .myButton:active {
-            position:relative;
-            top:1px;
-        }
-    </style>
-
 </head>
 <body>
 <div class="wrapper">
     <header>
         <h1>CRaC</h1>
         <h3>Coordinated Restore at Checkpoint</h3>
-        <p class="view">
-             <a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">
-            View the JavaDoc <small>www.javadoc.io/doc/org.crac/crac</small></a>
-            <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.crac%22">
-            Find on Maven Central <small>org.crac</small></a>
-        </p>
+        <ul>
+            <li>
+                <strong>org.crac</strong> Java library available on <a href="https://central.sonatype.com/namespace/org.crac">Maven Central</a>. <br/>The library can be used to develop using CRaC API on Java runtimes with no CRaC support (spericially if you are developing on macOS or Windows)
+            </li>
+            <li>
+                The <a href="https://javadoc.io/doc/org.crac/crac/latest/index.html">JavaDoc</a> for <strong>org.crack</strong> Library
+            </li>
+        </ul>
 
         <h3>Other Useful Links</h3>
-        <p>
-            <a href="https://openjdk.org/projects/crac/" target='_top'>
-                OpenJDK CRaC Project Page <small>openjdk.org/projects/crac/</small></a>
-
-            <a href="https://wiki.openjdk.org/display/crac" target='_top'>
-                OpenJDK CRaC Wiki Page <small>wiki.openjdk.org/display/crac</small></a>
-
-            <a href="https://github.com/CRaC/openjdk-builds" target='_top'>
-                OpenJDK with CRaC Support on GitHub <small>github.com/CRaC/openjdk-builds</small></a>
-
-            <a href="https://github.com/crac/org.crac" target='_top'>
-                Java <small>github.com/crac/org.crac</small></a>
-
-            <a href="https://github.com/CRaC/docs" target='_top'>
-                Examples <small>github.com/CRaC/docs</small></a>
-
-            <a href="https://docs.azul.com/core/crac/crac-introduction" target="_top">
-                Azul CRaC Documentation <small>Azul/crac</small>
-            </a>
-
+        <ul>
+            <li>
+                OpenJDK CRaC Project <a href="https://openjdk.org/projects/crac/" target='_top'>Page</a>
+            </li>
+            <li>
+                OpenJDK CRaC Project <a href="https://wiki.openjdk.org/display/crac" target='_top'>Wiki Page</a>
+            </li>
+            <li>
+                OpenJDK with CRaC on <a href="https://github.com/CRaC/openjdk-builds" target='_top'>GitHub</a>
+            </li>
+            <li>
+                <strong>org.crac</strong> Java library on <a href="https://github.com/crac/org.crac" target='_top'>GitHub</a>
+            </li>
+            <li>
+                Examples of using CRaC on <a href="https://github.com/CRaC/docs" target='_top'>GitHub</a>
+            </li>
+            <li>
+                Azul CRaC <a href="https://docs.azul.com/core/crac/crac-introduction" target="_top">Documentation</a>
+            </li>
         </p>
 
 
@@ -108,21 +66,20 @@
         
         <h3>Projects with CRaC Support</h3>
 
-        <ul>
+        <ol>
             <li>
                 <a href="http://micronaut.io"> Micronaut</a> added support for CRaC to the <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide" target="_top">Micronaut CRaC Module</a> (Hikari DataSources and Redis coordintation) and the <a href="https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/#_micronaut_crac_plugin" target="_top">Build System</a> (a single command to generate a docker image with CRaC image included
                 ). See <a href="https://github.com/CRaC/example-micronaut" target="_top">example</a>.
                 <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide/" target='_top'></a>
 
-                
+
                 To use CRaC with Micronaut, you can add "crac" feature at <a href="https://micronaut.io/launch" target="_top">Micronaut Launch</a>.
             </li>
             <li>
                 Basic CRaC support is a part of <a href="https://quarkus.io" target='_top'>Quarkus</a> since <a href="https://github.com/quarkusio/quarkus/pull/23950" target='_top'>2.10.0</a>. 
-                See <a href="https://github.com/CRaC/example-quarkus" target='_top'>example</a>.
-                
+                See <a href="https://github.com/CRaC/example-quarkus" target='_top'>example</a>.    
             </li>
-        </ul>
+        </ol>
 
         <h3>Contact</h3>
         <p>Please post your questions at <a href="https://foojay.io/today/category/crac/" target="_top">
