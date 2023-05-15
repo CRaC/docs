@@ -106,16 +106,25 @@
             but will not be limited to, integration with existing checkpoint/restore mechanisms and development 
             of new ones, changes to JVM and JDK to make images smaller and ensure they are correct.</p>
         
-        <h3>Authors, Contributors, and License</h3>
+        <h3>Projects with CRaC Support</h3>
 
-        <p>
-            CRaC was originally authored by Anton Kozlov (<a href="https://github.com/AntonKozlov" class="user-mention">@AntonKozlov</a>)
-            and placed in the public domain, as explained at
-            <a href="http://creativecommons.org/publicdomain/zero/1.0/">http://creativecommons.org/publicdomain/zero/1.0/</a>,
-            with contributions by Gil Tene (<a href="https://github.com/giltene" class="user-mention">@giltene</a>)
-        </p>
+        <ul>
+            <li>
+                <a href="http://micronaut.io"> Micronaut</a> added support for CRaC to the <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide" target="_top">Micronaut CRaC Module</a> (Hikari DataSources and Redis coordintation) and the <a href="https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/#_micronaut_crac_plugin" target="_top">Build System</a> (a single command to generate a docker image with CRaC image included
+                ). See <a href="https://github.com/CRaC/example-micronaut" target="_top">example</a>.
+                <a href="https://micronaut-projects.github.io/micronaut-crac/latest/guide/" target='_top'></a>
 
-        <h3>Support or Contact</h3>
+                
+                To use CRaC with Micronaut, you can add "crac" feature at <a href="https://micronaut.io/launch" target="_top">Micronaut Launch</a>.
+            </li>
+            <li>
+                Basic CRaC support is a part of <a href="https://quarkus.io" target='_top'>Quarkus</a> since <a href="https://github.com/quarkusio/quarkus/pull/23950" target='_top'>2.10.0</a>. 
+                See <a href="https://github.com/CRaC/example-quarkus" target='_top'>example</a>.
+                
+            </li>
+        </ul>
+
+        <h3>Contact</h3>
         <p>Please post your questions at <a href="https://foojay.io/today/category/crac/" target="_top">
             Foojay.io.</a>
         </p>
