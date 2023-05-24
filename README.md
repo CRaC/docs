@@ -268,3 +268,4 @@ Current OpenJDK implementation is based on using the CRIU project to create the 
 
 [CRIU](https://github.com/CRaC/criu) hosts a few changes made to improve CRaC usability.
 
+You can read more about debugging C/R issues in your application in the [debug guide](./debugging.md).
