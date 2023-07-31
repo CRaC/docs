@@ -29,7 +29,7 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
   * [Micronaut](#micronaut)
   * [Quarkus](#quarkus)
 * [Proof-of-Concept CRaC support implementation](#proof-of-concept-crac-support-implementation)
-  * [Tomcat / Sprint Boot](#tomcat--sprint-boot)
+  * [Tomcat / Spring Boot](#tomcat--spring-boot)
   * [AWS Lambda](#aws-lambda)
 * [User's flow](#users-flow)
 * [Programmer's flow](#programmers-flow)
@@ -135,7 +135,7 @@ Proof-of concept CRaC support was implemented in a few third-party frameworks an
 Source code links are below.
 Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.github.crac) under `io.github.crac` artifact-id.
 
-### Tomcat / Sprint Boot
+### Tomcat / Spring Boot
 
 [Tomcat with CRaC](https://github.com/CRaC/tomcat) is modification of Tomcat with CRaC support and it enables CRaC for Spring Boot applications.
 
@@ -184,7 +184,7 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 **WARNING**: next is a proposal phase and is subject to change
 
 Please refer to [examples](#examples) sections, [step-by-step guide](STEP-BY-STEP.md) or [best practices guide](best-practices.md) to get an application with CRaC support.
-The rest of the section is written for the [spring-boot example](#tomcat--sprint-boot).
+The rest of the section is written for the [spring-boot example](#tomcat--spring-boot).
 
 For the first, Java command line parameter `-XX:CRaCCheckpointTo=PATH` defines a path to store the image and also allows the java instance to be checkpointed.
 By the current implementation, the image is a directory with image files.
