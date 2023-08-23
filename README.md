@@ -227,11 +227,11 @@ Another option is to use an existing framework with CRaC support.
 
 No changes required:
 * Micronaut: https://github.com/CRaC/example-micronaut
-* Quarkus: https://github.com/CRaC/example-quarkus
+* Quarkus Hello World: https://github.com/CRaC/example-quarkus
 
 With configuration changes:
 * Spring-boot/Tomcat: https://github.com/CRaC/example-spring-boot/compare/base..crac
-
+* [Quarkus Super Heroes migration](super-heroes.md) shows a walkthrough for making an existing non-trivial Quarkus application CRaC-able.
 
 ### API
 
@@ -269,3 +269,4 @@ Current OpenJDK implementation is based on using the CRIU project to create the 
 [CRIU](https://github.com/CRaC/criu) hosts a few changes made to improve CRaC usability.
 
 You can read more about debugging C/R issues in your application in the [debug guide](./debugging.md).
+
