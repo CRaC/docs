@@ -184,4 +184,4 @@ One trick that can be used in containers is to ensure that before the checkpoint
 
 ## Further debugging of restore
 
-By default CRIU is configured during restore to write its log into standard output with errors-only verbosity level (1). [PR #63](https://github.com/openjdk/crac/pull/63) enables extra debugging through modifying the verbosity and output - you can use VM option `-XX:CREngine=criuengine,verbosity=4,log-file=/path/to/log.txt` to create debug-level (4) output by passing those options to CRIU.
+During restore CRIU writes its log into standard output with errors-only verbosity level (1). Debug-level (4) output can be enabled using VM option `-XX:CREngine=criuengine,--verbosity=4,--log-file=/path/to/log.txt` by passing these options to CRIU.

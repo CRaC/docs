@@ -270,3 +270,7 @@ Current OpenJDK implementation is based on using the CRIU project to create the 
 
 You can read more about debugging C/R issues in your application in the [debug guide](./debugging.md).
 
+## Workarounds
+
+Sometimes it might be difficult to alter the application to properly coordinate with the checkpoint (e.g. due to a code in a library you cannot modify). As a temporary workaround you can [configure file-descriptor policies](./fd-policies.md).
+
