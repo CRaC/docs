@@ -1,8 +1,17 @@
 # CPU Features
 
-You may run `-XX:CRaCCheckpointTo=PATH` on a computer named NEW and
-`-XX:CRaCRestoreFrom=PATH` on a computer named OLD. In such case you may see
-a variant of
+CPU features differ from host to host as newer CPUs have more these features
+(on the other hand some existing features may be even removed from newer CPUs).
+JVM (Java Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.),
+of each computer it is running on. The more CPU features JVM can use the better
+performance it can provide. JVM normally uses all the CPU features it can find
+on the CPU where it has started.
+
+CRaC unfortunately cannot reconfigure an already running JVM to stop using some
+of the CPU features when being restored on a CPU which is missing those
+features. You may create a snapshot (`-XX:CRaCCheckpointTo=PATH`) on a computer
+named NEW and restore it (`-XX:CRaCRestoreFrom=PATH`) on a computer named OLD.
+In such case you may see during restore a variant of error message
 
 ```
 $JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
@@ -11,11 +20,9 @@ If you are sure it will not crash you can override this check by -XX:+UnlockExpe
 <JVM exits here>
 ```
 
-CRaC unfortunately cannot reconfigure an already running JVM to stop using some
-of the advanced CPU features (such as AVX512) when being restored on a CPU
-which is missing those features. Just follow the advice from the complaining
-system running `-XX:CRaCRestoreFrom=PATH` when configuring the initial system
-running with the option `-XX:CRaCCheckpointTo=PATH`..
+Just follow the advice from the complaining system running
+`-XX:CRaCRestoreFrom=PATH` when configuring the initial system creating the
+snapshot (`-XX:CRaCCheckpointTo=PATH`).
 
 ```
 $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=0x21421801fcfbd7,0x3e6 -jar target/spring-boot-0.0.1-SNAPSHOT.jar
