@@ -219,28 +219,13 @@ $JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
 
 ### CPU Features
 
-You may run `-XX:CRaCCheckpointTo=PATH` on a computer named NEW and
-`-XX:CRaCRestoreFrom=PATH` on a computer named OLD. In such case you may see
-a variant of
+When running checkpoint and restore on different computers you may seen an error message during restore
 
 ```
-$JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
-You have to specify -XX:CPUFeatures=0x21421801fcfbd7,0x3e6 together with -XX:CRaCCheckpointTo when making a checkpoint file; specified -XX:CRaCRestoreFrom file contains CPU features 0x4ff7fff9dfcfbf7,0x3e6; missing features of this CPU are 0x4de3de79c000020,0x0 = 3dnowpref, adx, avx512f, avx512dq, avx512cd, avx512bw, avx512vl, sha, avx512_vpopcntdq, avx512_vpclmulqdq, avx512_vaes, avx512_vnni, clflushopt, clwb, avx512_vbmi2, avx512_vbmi, rdpid, fsrm, gfni, avx512_bitalg, pku, ospke, avx512_ifma
-If you are sure it will not crash you can override this check by -XX:+UnlockExperimentalVMOptions -XX:+IgnoreCPUFeatures .
-<JVM exits here>
+You have to specify -XX:CPUFeatures=[...] together with -XX:CRaCCheckpointTo when making a checkpoint file; specified -XX:CRaCRestoreFrom file contains CPU features [...]; missing features of this CPU are [...]
 ```
 
-CRaC unfortunately cannot reconfigure an already running JVM to stop using some
-of the advanced CPU features (such as AVX512) when being restored on a CPU
-which is missing those features. Just follow the advice from the complaining
-system running `-XX:CRaCRestoreFrom=PATH` when configuring the initial system
-running with the option `-XX:CRaCCheckpointTo=PATH`..
-
-```
-$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=0x21421801fcfbd7,0x3e6 -jar target/spring-boot-0.0.1-SNAPSHOT.jar
-```
-
-See [more details about the CPU Features](cpu-features.md).
+See [more details about the CPU Features configuration](cpu-features.md).
 
 ## Programmer's flow
 
