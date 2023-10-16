@@ -4,7 +4,7 @@ Basic configuration of the CPU feature can be found [in the main README file](RE
 
 ## Merging CPU Features
 
-If multiple computers are being used for restoring a CaC image you may need to
+If multiple computers are being used for restoring a CRaC image you may need to
 use `logical and` (`&`) of the suggested `-XX:CPUFeatures` option.
 
 ```
