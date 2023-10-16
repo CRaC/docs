@@ -270,3 +270,4 @@ Current OpenJDK implementation is based on using the CRIU project to create the 
 
 You can read more about debugging C/R issues in your application in the [debug guide](./debugging.md).
 
+If you're interacting with CRaCed JVM via signals or setting it up in container, you might be interested in the [anatomy of CRaC processes](./anatomy.md).
