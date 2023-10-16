@@ -2,7 +2,7 @@
 
 CPU features differ from host to host as newer CPUs have more these features
 (on the other hand some existing features may be even removed from newer CPUs).
-JVM (Java Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.),
+JVM (Java Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.)
 of each computer it is running on. The more CPU features JVM can use the better
 performance it can provide. JVM normally uses all the CPU features it can find
 on the CPU where it has started.
