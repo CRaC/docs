@@ -1,16 +1,16 @@
 # CPU Features
 
-CPU features differ from host to host as newer CPUs have more these features
-(on the other hand some existing features may be even removed from newer CPUs).
-JVM (Java Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.)
-of each computer it is running on. The more CPU features JVM can use the better
+CPU features differ from host to host as newer CPUs offer support for newer
+instructions, and some optional features may be removed over time. JVM (Java
+Virtual Machine) depends on CPU features (such as AVX512, SSE3 etc.) of each
+computer it is running on. The more CPU features JVM can use the better
 performance it can provide. JVM normally uses all the CPU features it can find
 on the CPU where it has started.
 
 CRaC unfortunately cannot reconfigure an already running JVM to stop using some
 of the CPU features when being restored on a CPU which is missing those
-features. You may create a snapshot (`-XX:CRaCCheckpointTo=PATH`) on a computer
-named NEW and restore it (`-XX:CRaCRestoreFrom=PATH`) on a computer named OLD.
+features. You may create a snapshot (`-XX:CRaCCheckpointTo=PATH`) on a newer
+computer and restore it (`-XX:CRaCRestoreFrom=PATH`) on an older computer.
 In such case you may see during restore a variant of error message
 
 ```
@@ -30,8 +30,8 @@ $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=0x21421801fcfbd7,0x3
 
 ## Merging CPU Features
 
-If multiple computers are being used for restoring a CRaC image you may need to
-use `logical and` (`&`) of the suggested `-XX:CPUFeatures` option.
+If the CRaC image is restored on computers with different CPU features you may
+need to use `logical and` (`&`) of the suggested `-XX:CPUFeatures` option.
 
 ```
 computer A used for an image restore:
@@ -75,7 +75,7 @@ If you are sure it will not crash you can override this check by -XX:+UnlockExpe
 <JVM exits here>
 ```
 
-you may be sure the missing CPU feature is not really required for the run of
+You may be sure the missing CPU feature is not really required for the run of
 JVM. You can enforce JVM to run even in such a case. Logically JVM may crash by
 segmentation fault (on UNIX) or other fatal error (on MS-Windows) later during
 its run due to the missing CPU feature(s). You have been warned.
