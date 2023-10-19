@@ -28,6 +28,19 @@ snapshot (`-XX:CRaCCheckpointTo=PATH`).
 $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=0x21421801fcfbd7,0x3e6 -jar target/spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
+## -XX:CPUFeatures=generic
+
+If the CRaC image is restored on computers with different CPU features the most
+simple solution is to just run Java with
+
+```
+$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=generic -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+```
+
+Unfortunately the run then has suboptimal performance. Still the difference may
+not be even measurable. For obtaining an optimal performance continue reading
+[Merging CPU Features](#merging-cpu-features).
+
 ## Merging CPU Features
 
 If the CRaC image is restored on computers with different CPU features you may
@@ -86,3 +99,20 @@ You have to specify -XX:CPUFeatures=0x21421801fcfbd7,0x3e6 together with -XX:CRa
 If you are sure it will not crash you can override this check by -XX:+UnlockExperimentalVMOptions -XX:+IgnoreCPUFeatures .
 <JVM continues its execution here>
 ```
+
+## -XX:CPUFeatures=ignore
+
+If you have any problems with this CPU features handling code you can disable
+it completely by:
+
+```
+$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -XX:CPUFeatures=ignore -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+```
+
+Please [provide a feedback](https://mail.openjdk.org/mailman/listinfo/crac-dev)
+to the CRaC project in such a case.
+
+## -XX:CPUFeatures=native
+
+`-XX:CPUFeatures=native` is the default. You may want to use it to override another
+`-XX:CPUFeatures` option specified earlier on your command line.
