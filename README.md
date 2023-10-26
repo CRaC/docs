@@ -128,31 +128,21 @@ Basic CRaC support is a part of Quarkus [since 2.10.0](https://github.com/quarku
 
 Example: https://github.com/CRaC/example-quarkus
 
+### Spring Boot
+
+Spring Boot provides CRaC support as of version 3.2, for more details see:
+ * [Scale to zero with Spring and Project CRaC](https://spring.io/blog/2023/10/16/runtime-efficiency-with-spring#jvm-checkpoint-restore-scale-to-zero-with-spring-and-project-crac)
+ * [Spring Boot documentation for Project CRaC support](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment.html#deployment.efficient.checkpoint-restore)
+ * [Spring Framework documentation for Project CRaC support](https://docs.spring.io/spring-framework/reference/6.1/integration/checkpoint-restore.html)
+
+Example: https://github.com/sdeleuze/spring-boot-crac-demo
+
 ## Proof-of-Concept CRaC support implementation
 
 Proof-of concept CRaC support was implemented in a few third-party frameworks and libraries.
 
 Source code links are below.
 Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.github.crac) under `io.github.crac` artifact-id.
-
-### Tomcat / Spring Boot
-
-[Tomcat with CRaC](https://github.com/CRaC/tomcat) is modification of Tomcat with CRaC support and it enables CRaC for Spring Boot applications.
-
-Artifacts: https://mvnrepository.com/artifact/io.github.crac.org.apache
-
-Example: https://github.com/CRaC/example-spring-boot ([diff](https://github.com/CRaC/example-spring-boot/compare/base..crac))
-
-Changes: https://github.com/CRaC/tomcat/compare/8.5.75..crac
-* Tomcat Embed (used by spring-boot-example below):
-  * `java/org/apache/tomcat/util/net/AbstractEndpoint.java`
-  * `res/maven/tomcat-embed-core.pom`
-* JDBC Pool library:
-  * `modules/jdbc-pool/`
-* standalone Tomcat (Catalina):
-  * `java/org/apache/catalina/`
-  * `java/org/apache/juli/`
-  * `bin/`, `conf/`
 
 ### AWS Lambda
 
