@@ -28,15 +28,15 @@ Coordinated Restore is not tied to a particular checkpoint/restore implementatio
 * [Projects with CRaC support](#projects-with-crac-support)
   * [Micronaut](#micronaut)
   * [Quarkus](#quarkus)
+  * [Spring Boot](#spring-boot)
 * [Proof-of-Concept CRaC support implementation](#proof-of-concept-crac-support-implementation)
-  * [Tomcat / Spring Boot](#tomcat--spring-boot)
   * [AWS Lambda](#aws-lambda)
 * [User's flow](#users-flow)
 * [Programmer's flow](#programmers-flow)
   * [API](#api)
     * [`jdk.crac`](#jdkcrac)
     * [`org.crac`](#orgcrac)
-* [Implemenation details](#implemenation-details)
+* [Implementation details](#implementation-details)
 
 ## Results
 
@@ -108,6 +108,12 @@ $ sudo tar zxf <jdk>.tar.gz
 
 **NOTE**: The JDK archive should be extracted with `sudo`.
 
+When using CRaC, if you see an "Operation not permitted" error, you may have to update your `criu` permissions with:
+```
+sudo chown root:root $JAVA_HOME/lib/criu
+sudo chmod u+s $JAVA_HOME/lib/criu
+```
+
 ## Projects with CRaC support
 
 ### Micronaut
@@ -132,10 +138,12 @@ Example: https://github.com/CRaC/example-quarkus
 
 Spring Boot provides CRaC support as of version 3.2, for more details see:
  * [Scale to zero with Spring and Project CRaC](https://spring.io/blog/2023/10/16/runtime-efficiency-with-spring#jvm-checkpoint-restore-scale-to-zero-with-spring-and-project-crac)
- * [Spring Boot documentation for Project CRaC support](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment.html#deployment.efficient.checkpoint-restore)
+ * [Spring Boot documentation for Project CRaC support](https://docs.spring.io/spring-boot/docs/3.2.x/reference/html/deployment.html#deployment.efficient.checkpoint-restore)
  * [Spring Framework documentation for Project CRaC support](https://docs.spring.io/spring-framework/reference/6.1/integration/checkpoint-restore.html)
 
-Example: https://github.com/sdeleuze/spring-boot-crac-demo
+Examples:
+ * https://github.com/CRaC/example-spring-boot
+ * https://github.com/sdeleuze/spring-boot-crac-demo
 
 ## Proof-of-Concept CRaC support implementation
 
@@ -156,7 +164,7 @@ Changes: https://github.com/CRaC/aws-lambda-java-libs/compare/master...crac
 
 ## User's flow
 <!--
-CRaC allows to start Java applications that are alreay initialized and warmed-up.
+CRaC allows to start Java applications that are already initialized and warmed-up.
 Deployment scheme reflects the need to collect the required data.
 -->
 
@@ -174,7 +182,7 @@ CRaC deployment scheme reflects the need to collect data required for Java appli
 **WARNING**: next is a proposal phase and is subject to change
 
 Please refer to the [Projects with CRaC support](#projects-with-crac-support) section, [step-by-step guide](STEP-BY-STEP.md) or [best practices guide](best-practices.md) to get an application with CRaC support.
-The rest of the section is written for the [spring-boot example](#tomcat--spring-boot).
+The rest of the section is written for the [spring-boot example](#spring-boot).
 
 For the first, Java command line parameter `-XX:CRaCCheckpointTo=PATH` defines a path to store the image and also allows the java instance to be checkpointed.
 By the current implementation, the image is a directory with image files.
@@ -182,7 +190,7 @@ The directory will be created if it does not exist, but no parent directories ar
 
 ```
 export JAVA_HOME=./jdk
-$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/spring-boot-0.0.1-SNAPSHOT.jar
+$JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/example-spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
 For the second, in another console: supply canary worload ...
@@ -192,7 +200,7 @@ Greetings from Spring Boot!
 ```
 ... and make a checkpoint by a jcmd command
 ```
-$ jcmd target/spring-boot-0.0.1-SNAPSHOT.jar JDK.checkpoint
+$ jcmd target/example-spring-boot-0.0.1-SNAPSHOT.jar JDK.checkpoint
 1563568:
 Command executed successfully
 ```
@@ -228,9 +236,9 @@ Another option is to use an existing framework with CRaC support.
 No changes required:
 * Micronaut: https://github.com/CRaC/example-micronaut
 * Quarkus Hello World: https://github.com/CRaC/example-quarkus
+* Spring Boot: https://github.com/CRaC/example-spring-boot
 
 With configuration changes:
-* Spring-boot/Tomcat: https://github.com/CRaC/example-spring-boot/compare/base..crac
 * [Quarkus Super Heroes migration](super-heroes.md) shows a walkthrough for making an existing non-trivial Quarkus application CRaC-able.
 
 ### API
@@ -262,7 +270,7 @@ The dummy implementation allows an application to run but not to use CRaC:
 * checkpoint request fails with an exception.
 
 
-## Implemenation details
+## Implementation details
 
 Current OpenJDK implementation is based on using the CRIU project to create the image.
 
