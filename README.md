@@ -6,5 +6,10 @@ This repository contains the sources of the CRaC documentation that is provided 
 
 * The website is generated with [Hugo](https://gohugo.io/).
 * The theme is [Ace](https://docs.vantage-design.com/ace/).
-* Run the website locally with `hugo serve`.
-* The website is build and published via a GitHub Action.
+* The website is built and published to GitHub Pages with a GitHub Action.
+
+### Run Locally
+
+* Install Hugo, on macOS: `brew install hugo`.
+* Run the website with `hugo serve`.
+* The website is available on [localhost:1313](http://localhost:1313/).

@@ -2,6 +2,7 @@ baseURL = 'https://crac.org/'
 languageCode = 'en-us'
 title = 'crac.org'
 theme = "ace-documentation"
+publishDir = "public"
 
 [[menu.shortcuts]]
 name = "<i class='fab fa-github'></i> CRaC Repository"
