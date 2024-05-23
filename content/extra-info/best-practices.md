@@ -1,3 +1,9 @@
++++
+title = "Best Practices"
+description = ""
+weight = 10
++++
+
 # Best practices for implementing CRaC support in your application/library
 
 This guide assumes you are already familiar with the concepts and `Resource` API; please check out the [step-by-step guide](STEP-BY-STEP.md) for those.

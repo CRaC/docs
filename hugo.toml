@@ -1,0 +1,25 @@
+baseURL = 'https://crac.org/'
+languageCode = 'en-us'
+title = 'crac.org'
+theme = "ace-documentation"
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> CRaC Repository"
+url = "https://github.com/CRaC"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-java'></i> OpenJDK Project"
+url = "https://openjdk.org/projects/crac/"
+weight = 20
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-java'></i> OpenJDK Wiki"
+url = "https://wiki.openjdk.org/display/crac"
+weight = 30
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-foojay'></i> Foojay Blogs"
+url = "https://foojay.io/today/category/crac/"
+weight = 40
+

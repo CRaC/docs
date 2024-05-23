@@ -1,28 +1,35 @@
-# Running Quarkus Super Heroes with CRaC
++++
+title = "Quarkus Super Heroes"
+description = ""
+weight = 25
++++
 
 This guide will walk you through the process of taking an existing non-trivial application and getting it CRaC-able. The [workshop](https://quarkus.io/quarkus-workshops/super-heroes/spine.html) describes the application, please refer there for any details. We'll start right away with the result of that workshop:
 
 1. Make sure that JAVA_HOME points to OpenJDK CRaC JDK, and ensure that CRaC works (CRIU has correct permissions etc).
 2. Checkout and build Super Heroes:
 
-```
+```sh
 git clone https://github.com/quarkusio/quarkus-workshops
 cd quarkus-workshops/quarkus-workshop-super-heroes
 ./mvnw clean package -DskipTests -Pcomplete
 ```
 
 3. Run the infrastructure:
-```
+
+```sh
 docker-compose -f super-heroes/infrastructure/docker-compose.yaml up -d
 ```
 
 4. Start the UI
-```
+
+```sh
 $JAVA_HOME/bin/java -jar super-heroes/ui-super-heroes/target/quarkus-app/quarkus-run.jar
 ```
 
 5. In individual consoles start the microservices
-```
+
+```sh
 $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=/tmp/heroes -jar super-heroes/rest-heroes/target/quarkus-app/quarkus-run.jar 
 $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=/tmp/villains -jar super-heroes/rest-villains/target/quarkus-app/quarkus-run.jar
 $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=/tmp/fights \
@@ -39,13 +46,13 @@ It seems that there is a bug in the original application: the first request usua
 
 7. Checkpoint the three microservices:
 
-```
+```sh
 for pid in $(jps -l | grep super-heroes/rest- | cut -f 1 -d ' '); do jcmd $pid JDK.checkpoint; done;
 ```
 
 CRaC will experience some problems due to files or network connection being open:
 
-```
+```sh
 1586473:
 An exception during a checkpoint operation:
 jdk.crac.CheckpointException
@@ -137,7 +144,7 @@ rule that can be included in the build and highlights the incompatible artifacts
 Now when you try to build the project, the enforcer will spit out errors, including suggestions
 for a replacement artifact:
 
-```
+```sh
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-enforcer-plugin:3.3.0:enforce (default) on project rest-villains: 
 [ERROR] Rule 0: io.github.crac.CracDependencies failed with message:
 [ERROR] io.quarkus.workshop.super-heroes:rest-villains:jar:1.0.0-SNAPSHOT
@@ -172,7 +179,7 @@ The offending dependencies can be removed using `<exclusions>`, and CRaC'ed depe
 Usually these have `groupId` prefixed with `org.github.crac.`, `artifactId` is identical and version is suffixed
 with `.CRAC.N` where `N` stands for counter of CRaC-related changes; these should be added on top of the original (tagged) version.
 
-```
+```xml
 <dependency>
   <groupId>io.quarkus</groupId>
   <artifactId>quarkus-resteasy-reactive</artifactId>
@@ -196,7 +203,7 @@ for any compatibility issues thoroughly.
 To see the 'patched' version please see [this fork](https://github.com/rvansa/quarkus-workshops/tree/crac).
 To use the Maven Enforcer conveniently we have added a parent module to the microservices and set up Maven Enforcer.
 
-```
+```sh
 git remote add rvansa https://github.com/rvansa/quarkus-workshops.git
 git fetch rvansa crac && checkout rvansa/crac
 ```
@@ -216,7 +223,7 @@ If this is the case please trigger checkpoint again; this time everything should
 
 4. Restore the services in individual consoles:
 
-```
+```sh
 $JAVA_HOME/bin/java -jar -XX:CRaCRestoreFrom=/tmp/heroes
 $JAVA_HOME/bin/java -jar -XX:CRaCRestoreFrom=/tmp/villains
 $JAVA_HOME/bin/java -jar -XX:CRaCRestoreFrom=/tmp/fights

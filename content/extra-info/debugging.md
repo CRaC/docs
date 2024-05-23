@@ -1,3 +1,9 @@
++++
+title = "Debugging"
+description = ""
+weight = 20
++++
+
 # Debugging checkpoint and restore failures
 
 This guide will help you identify common problems when the checkpoint operation does not work.
@@ -6,7 +12,7 @@ This guide will help you identify common problems when the checkpoint operation 
 
 When the checkpoint operation fails in the native part, there is usually little information in the stack trace of the exception:
 
-```
+```sh
 CR: Checkpoint ...
 JVM: invalid info for restore provided: queued code -1
 Exception in thread "main" jdk.crac.CheckpointException
@@ -18,7 +24,7 @@ Exception in thread "main" jdk.crac.CheckpointException
 
 Currently the C/R depends on the **CRIU** project, particularly on the [CRaC fork](https://github.com/CRaC/criu). This requires extensive privileges (capabilities) and therefore usually runs as `root` granted through the SUID bit. Therefore the first check is would be whether this is true:
 
-```
+```sh
 $ ls -la $JAVA_HOME/lib/criu
 -rwsr-xr-x 1 root root 6347736 Mar 24 16:33 /opt/openjdk-17-crac+5_linux-x64/lib/criu
    ^         ^
@@ -28,7 +34,7 @@ $ ls -la $JAVA_HOME/lib/criu
 
 If this is not the case please update it:
 
-```
+```sh
 sudo chown root:root /path/to/criu
 sudo chmod u+s /path/to/criu
 ```
@@ -41,7 +47,7 @@ When you confirm that this is set correctly but the checkpoint still fails you c
 
 Before the checkpoint the application has to isolate itself from the outer world: this means closing all file descriptors except the standard input, output and error, and few other (e.g. pointing to JDK or files on the classpath). If the application fails to do so the checkpoint fails with an exception like below:
 
-```
+```sh
 Exception in thread "main" jdk.crac.CheckpointException
 	at java.base/jdk.crac.Core.checkpointRestore1(Core.java:129)
 	at java.base/jdk.crac.Core.checkpointRestore(Core.java:264)
@@ -66,7 +72,7 @@ Exception in thread "main" jdk.crac.CheckpointException
 
 The top level `CheckpointException` wraps all problems as its suppressed exceptions. Here we can see that having file `/foo/bar` open as FD `4` prevents the checkpoint but unless we know what part of the application opens this file there is not anything actionable. Therefore we will run this with `-Djdk.crac.collect-fd-stacktraces=true` as the exception message suggests:
 
-```
+```sh
 Exception in thread "main" jdk.crac.CheckpointException
 	at java.base/jdk.crac.Core.checkpointRestore1(Core.java:129)
 	at java.base/jdk.crac.Core.checkpointRestore(Core.java:264)
@@ -103,7 +109,7 @@ The cause is recorded when the FD is opened, the message shows thread name (`mai
 
 When the file descriptor is opened without assisting FileDescriptor instance CRaC still discovers this before the checkpoint but won't display any stack trace:
 
-```
+```sh
 Exception in thread "main" jdk.crac.CheckpointException
 	at java.base/jdk.crac.Core.checkpointRestore1(Core.java:159)
 	at java.base/jdk.crac.Core.checkpointRestore(Core.java:264)
@@ -117,13 +123,13 @@ Exception in thread "main" jdk.crac.CheckpointException
 
 In this case we need to find the source of the syscall returning the new file descriptor in native code. One tool that can help with that is `strace`:
 
-```
+```sh
 strace -f -o /tmp/strace.txt java ...
 ```
 
 This will follow forking process/thread (`-f`) and store the log in `/tmp/strace.txt`. There we can find that FDs 4 and 5 were created through the `pipe2` syscall:
 
-```
+```sh
 1204483 pipe2([4, 5], 0)                = 0
 1204483 fcntl(4, F_GETFL)               = 0 (flags O_RDONLY)
 1204483 fcntl(4, F_SETFL, O_RDONLY|O_NONBLOCK) = 0
@@ -133,10 +139,11 @@ This will follow forking process/thread (`-f`) and store the log in `/tmp/strace
 
 Other common syscalls opening file descriptors are e.g. `openat`, `dup` or `dup2`. We will run `strace` once more, but this time filtering only one syscall (`-e pipe2`), and recording stacks (`-k`):
 
-```
+```sh
 strace -f -o /tmp/strace.txt -e pipe2 -k java ...
 ```
-```
+
+```sh
 1204650 pipe2([4, 5], 0)                = 0
  > /usr/lib/x86_64-linux-gnu/libc.so.6(pipe+0xd) [0x11522d]
  > /path/to/my/jdk/lib/libnio.so() [0x84bf]
@@ -145,7 +152,7 @@ strace -f -o /tmp/strace.txt -e pipe2 -k java ...
 
 We can see that the `pipe` method was called from `libnio.so` This example used a debug build of JDK so we still have symbols, so we can find the function with address `0x84bf`:
 
-```
+```sh
 objdump -d --start-address 0x84bf /path/to/my/jdk/lib/libnio.so | head
 
 /path/to/my/jdk/lib/libnio.so:     file format elf64-x86-64
@@ -163,7 +170,7 @@ Here we can track down the invocation to native method `makePipe()` in `sun.nio.
 
 Errors can happen during restore, too. While on baremetal deployments PIDs usually don't clash, in containers starting from PID 1 this is more likely. The error then looks like this:
 
-```
+```sh
 Error (criu/cr-restore.c:1506): Can't fork for 9: File exists
 Error (criu/cr-restore.c:2593): Restoring FAILED.
 ```
@@ -172,7 +179,7 @@ The message is a bit misleading: the error is not related to files. In this exam
 
 The error above should not be confused with another one:
 
-```
+```sh
 Error (criu/cr-restore.c:1506): Can't fork for 9: Read-only file system
 Error (criu/cr-restore.c:2593): Restoring FAILED.
 Error (criu/cr-restore.c:1823): Pid 20 do not match expected 9

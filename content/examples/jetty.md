@@ -1,3 +1,9 @@
++++
+title = "Jetty"
+description = ""
+weight = 20
++++
+
 # Step-by-step CRaC support for a Jetty app
 
 A program can be restored in a different environment compared to the one where it was checkpointed.
@@ -13,6 +19,7 @@ Full source code for this section can be found in [example-jetty](https://github
 Commit history corresponds to the steps of the tutorial with greater details.
 
 A simple Jetty application will serve as a starting point:
+
 ```java
 class ServerManager {
     Server server;
@@ -49,7 +56,7 @@ Use CRaC API requires adding [org.crac](https://github.com/CRaC/org.crac) as a m
 - In runtime, org.crac uses reflection to detect CRaC implementation. If the one is available,
 all requests to org.crac are passed to the implementation. Otherwise, requests are forwarded to a dummy implementation.
 
-```
+```xml
 <dependency>
   <groupId>org.crac</groupId>
   <artifactId>crac</artifactId>
@@ -67,14 +74,15 @@ $ $JAVA_HOME/bin/java -XX:CRaCCheckpointTo=cr -jar target/example-jetty-1.0-SNAP
 ```
 
 Warm-up the application:
-```
+
+```sh
 $ curl localhost:8080
 Hello World
 ```
 
 Use `jcmd` to trigger checkpoint:
 
-```
+```sh
 $ jcmd target/example-jetty-1.0-SNAPSHOT.jar JDK.checkpoint
 80694:
 Command executed successfully
@@ -87,7 +95,7 @@ In the future all diagnostic output will be provided by `jcmd`.
 The expected output of the application is next.
 The checkpoint cannot be created with a listening socket, the exception is thrown.
 
-```
+```sh
 jdk.crac.impl.CheckpointOpenSocketException: tcp6 localAddr :: localPort 8080 remoteAddr :: remotePort 0
         at java.base/jdk.crac.Core.translateJVMExceptions(Core.java:80)
         at java.base/jdk.crac.Core.checkpointRestore1(Core.java:137)
@@ -148,14 +156,16 @@ To prevent this and for simplicity of example, we add another non-daemon thread 
 ```
 
 Now `jcmd` should make the app to print next in the console and exit:
-```
+
+```sh
 2020-06-29 18:01:56.566:INFO:oejs.AbstractConnector:Thread-9: Stopped ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 CR: Checkpoint ...
 Killed
 ```
 
 The image can be used to start another instances:
-```
+
+```sh
 $ $JAVA_HOME/bin/java -XX:CRaCRestoreFrom=cr
 2020-06-29 18:06:45.939:INFO:oejs.Server:Thread-9: jetty-9.4.30.v20200611; built: 2020-06-11T12:34:51.929Z; git: 271836e4c1f4612f12b7bb13ef5a92a927634b0d; jvm 14-internal+0-adhoc..jdk
 2020-06-29 18:06:45.942:INFO:oejs.AbstractConnector:Thread-9: Started ServerConnector@319b92f3{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
