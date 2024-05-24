@@ -1,6 +1,5 @@
 +++
 title = "Debugging"
-description = ""
 weight = 20
 +++
 

@@ -1,6 +1,5 @@
 +++
 title = "Startup Improvement Results"
-description = ""
 weight = 12
 +++
 

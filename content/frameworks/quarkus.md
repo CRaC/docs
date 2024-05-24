@@ -1,6 +1,5 @@
 +++
 title = "Quarkus"
-description = ""
 weight = 10
 +++
 

@@ -1,6 +1,5 @@
 +++
 title = "AWS Lambda"
-description = ""
 weight = 30
 +++
 

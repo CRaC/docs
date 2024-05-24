@@ -1,6 +1,5 @@
 +++
 title = "OpenJDK CRaC Project"
-description = ""
 weight = 13
 +++
 

@@ -1,6 +1,5 @@
 +++
 title = "Jetty"
-description = ""
 weight = 20
 +++
 

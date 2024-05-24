@@ -1,6 +1,5 @@
 +++
 title = "What is Coordinated Restore at Checkpoint?"
-description = ""
 weight = 11
 +++
 

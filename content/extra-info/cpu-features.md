@@ -1,6 +1,5 @@
 +++
 title = "CPU Features"
-description = ""
 weight = 30
 +++
 

@@ -1,6 +1,5 @@
 +++
 title = "Micronaut"
-description = ""
 weight = 20
 +++
 

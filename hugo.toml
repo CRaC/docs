@@ -1,8 +1,12 @@
-baseURL = 'https://crac.org/'
 languageCode = 'en-us'
+defaultContentLanguage = "en"
+baseURL = 'https://crac.org/'
 title = 'crac.org'
-theme = "ace-documentation"
+theme = 'hugo-theme-relearn'
 publishDir = "public"
+
+[params]
+themeVariant = ['blue']
 
 [[menu.shortcuts]]
 name = "<i class='fab fa-github'></i> CRaC Repository"
@@ -20,7 +24,7 @@ url = "https://wiki.openjdk.org/display/crac"
 weight = 30
 
 [[menu.shortcuts]]
-name = "<i class='fab fa-foojay'></i> Foojay Blogs"
+name = "<i class='fab fa-java'></i> Foojay Blogs"
 url = "https://foojay.io/today/category/crac/"
 weight = 40
 

@@ -5,7 +5,7 @@ This repository contains the sources of the CRaC documentation that is provided 
 ## Static Website Generation
 
 * The website is generated with [Hugo](https://gohugo.io/).
-* The theme is [Ace](https://docs.vantage-design.com/ace/).
+* The theme is [Relearn](https://mcshelby.github.io/hugo-theme-relearn/index.html).
 * The website is built and published to GitHub Pages with a GitHub Action.
 
 ### Run Locally

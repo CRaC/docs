@@ -1,6 +1,5 @@
 +++
 title = "Use CRaC"
-description = ""
 weight = 20
 +++
 

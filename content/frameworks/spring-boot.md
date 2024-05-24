@@ -1,6 +1,5 @@
 +++
 title = "SpringBoot"
-description = ""
 weight = 5
 +++
 

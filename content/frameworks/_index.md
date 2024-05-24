@@ -1,6 +1,5 @@
 +++
-title = "Frameworks with CRaC integration"
-description = ""
+title = 'Frameworks with CRaC integration'
 weight = 30
 +++
 
@@ -15,4 +14,4 @@ Builds can be found in [Maven Central](https://mvnrepository.com/artifact/io.git
 
 Several frameworks provide CRaC functionality out-of-the-box.
 
-{{< childpages >}}
+{{% children sort="weight" %}}

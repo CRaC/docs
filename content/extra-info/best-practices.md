@@ -1,6 +1,5 @@
 +++
 title = "Best Practices"
-description = ""
 weight = 10
 +++
 
