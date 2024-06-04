@@ -9,7 +9,7 @@ Coordinated Restore at Checkpoint (CRaC) is a JDK project that allows you to sta
 
 <div style="text-align: center">
 
-{{% button href="/use/implement-crac/" style="blue" icon="github" %}}CRaC IN YOUR CODE{{% /button %}}
+{{% button href="/use/implement-crac/" style="blue" icon="fas fa-github" %}}CRaC IN YOUR CODE{{% /button %}}
 {{% button href="/use/checkpoint-and-restore/" style="blue" icon="rocket" %}}USING CRaC{{% /button %}}
 
 {{% button href="https://github.com/CRaC/org.crac/tags" style="blue" icon="bookmark" %}}CRaC API 1.4.0 NOW AVAILABLE{{% /button %}}
@@ -86,7 +86,7 @@ Generate checkpoints from code or with jcmd.
 <span style="border: solid 1px black; padding: 10px; margin: 10px; flex-grow: 1; text-align: center;">
 <span style="font-weight: bold; font-size: 1.4em;">Restore from checkpoint</span>
 <br/><br/>
-Restore on the same machine, or many others from a checkpoint
+Restore on the same machine, or many others from a checkpoint.
 
 </div>
 
@@ -98,6 +98,17 @@ Restore on the same machine, or many others from a checkpoint
 Use frameworks, or implement the CRaC API to assist in the creation and restore of checkpoints
 </span>
 
+<span style="border: solid 1px black; padding: 10px; margin: 10px; flex-grow: 1; text-align: center;">
+<span style="font-weight: bold; font-size: 1.4em;">Framework support</span>
+<br/><br/>
+Several frameworks (Spring Boot, Quarkus, Micronaut,...) offer CRaC support out-of-the-box.
+</span>
+
+<span style="border: solid 1px black; padding: 10px; margin: 10px; flex-grow: 1; text-align: center;">
+<span style="font-weight: bold; font-size: 1.4em;">Use it in the Cloud</span>
+<br/><br/>
+AWS Lambda has CRaC functionality integrated, no code changes needed!
+</span>
 
 </div>
 
