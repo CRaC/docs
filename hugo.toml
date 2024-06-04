@@ -5,6 +5,9 @@ title = 'crac.org'
 theme = 'hugo-theme-relearn'
 publishDir = "public"
 
+[markup.goldmark.renderer]
+unsafe = true
+
 [params]
 themeVariant = ['blue']
 
