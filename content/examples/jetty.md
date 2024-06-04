@@ -3,7 +3,7 @@ title = "Jetty"
 weight = 20
 +++
 
-# Step-by-step CRaC support for a Jetty app
+## Step-by-step CRaC support for a Jetty app
 
 A program can be restored in a different environment compared to the one where it was checkpointed.
 Dependencies on the environment need to be detected and a coordination code need to be created to update the dependencies after restore.

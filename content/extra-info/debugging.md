@@ -3,11 +3,11 @@ title = "Debugging"
 weight = 20
 +++
 
-# Debugging checkpoint and restore failures
+## Debugging checkpoint and restore failures
 
 This guide will help you identify common problems when the checkpoint operation does not work.
 
-## Failures in native C/R
+### Failures in native C/R
 
 When the checkpoint operation fails in the native part, there is usually little information in the stack trace of the exception:
 
@@ -42,7 +42,7 @@ This might not be sufficient if Java is running in a container; checkpoint requi
 
 When you confirm that this is set correctly but the checkpoint still fails you can get additional insight from the `dump4.log` file located in the image directory (`-XX:CRaCCheckpointTo`).
 
-## File descriptors in Java code
+### File descriptors in Java code
 
 Before the checkpoint the application has to isolate itself from the outer world: this means closing all file descriptors except the standard input, output and error, and few other (e.g. pointing to JDK or files on the classpath). If the application fails to do so the checkpoint fails with an exception like below:
 
@@ -104,7 +104,7 @@ Exception in thread "main" jdk.crac.CheckpointException
 
 The cause is recorded when the FD is opened, the message shows thread name (`main`) and epoch timestamp (some FDs are open early during VM initialization when it is not possible to format the timestamp to a human-readable format). This information can help you identify the component that does not close the FD during checkpoint.
 
-## File descriptors in native code
+### File descriptors in native code
 
 When the file descriptor is opened without assisting FileDescriptor instance CRaC still discovers this before the checkpoint but won't display any stack trace:
 
@@ -165,7 +165,7 @@ Disassembly of section .text:
 
 Here we can track down the invocation to native method `makePipe()` in `sun.nio.ch.IOUtil`. You can debug your application putting a breakpoint on that method and find the rest of the Java call stack, or check manually all usages.
 
-## Restore conflict of PIDs
+### Restore conflict of PIDs
 
 Errors can happen during restore, too. While on baremetal deployments PIDs usually don't clash, in containers starting from PID 1 this is more likely. The error then looks like this:
 
@@ -188,6 +188,6 @@ This is rather a sign that CRIU has insufficient privileges to write into `ns_la
 
 One trick that can be used in containers is to ensure that before the checkpoint PIDs are higher than anything needed for the restore, either writing `/proc/sys/kernel/ns_last_pid` or cycling dummy processes until `ns_last_pid` is higher than the required value (128 might be a good starting point).
 
-## Further debugging of restore
+### Further debugging of restore
 
 During restore CRIU writes its log into standard output with errors-only verbosity level (1). Debug-level (4) output can be enabled using VM option `-XX:CREngine=criuengine,--verbosity=4,--log-file=/path/to/log.txt` by passing these options to CRIU.
