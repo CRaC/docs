@@ -182,6 +182,10 @@ This is rather a sign that CRIU has insufficient privileges to write into `ns_la
 
 One trick that can be used in containers is to ensure that before the checkpoint PIDs are higher than anything needed for the restore, either writing `/proc/sys/kernel/ns_last_pid` or cycling dummy processes until `ns_last_pid` is higher than the required value (128 might be a good starting point).
 
+## Multiple Checkpoints
+
+Doing a subsequent checkpoint on a process that has already been checkpointed and restored does not yet work. This is a [known issue](https://github.com/CRaC/docs/issues/21).
+
 ## Further debugging of restore
 
 During restore CRIU writes its log into standard output with errors-only verbosity level (1). Debug-level (4) output can be enabled using VM option `-XX:CREngine=criuengine,--verbosity=4,--log-file=/path/to/log.txt` by passing these options to CRIU.
